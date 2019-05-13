@@ -16,8 +16,11 @@
 #include <termios.h>
 #include <unistd.h>
 #include <ctype.h>
-
-
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <time.h>
+#include <sys/time.h>
+#include <signal.h>
 
 /* baudrate settings are defined in <asm/termbits.h>, which is
 included by <termios.h> */
@@ -71,6 +74,6 @@ int	MEI_GETBILLS  =  0x02;
 int	MEI_RETRIEVE  =  0x0B;
 int	MEI_BOOKMARK = 0x0D;
 
-
+void log_Function(char *log_message); //provides logging service for mei_service
 
 #endif /* MEI_SERVICE_H_ */
