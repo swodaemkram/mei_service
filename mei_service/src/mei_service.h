@@ -75,7 +75,10 @@ int	MEI_GETBILLS  =  0x02;
 int	MEI_RETRIEVE  =  0x0B;
 int	MEI_BOOKMARK = 0x0D;
 
+//--------------------------------All Available Functions------------------------
 void log_Function(char *log_message); //provides logging service for mei_service
 void SignalHandler(int signum); //provides signal handling for the service
+int do_crc(char buff[], int buffer_len); //Implementation of the MEI XOR Check Sum
+//--------------------------------End of Available Functions---------------------
 
 #endif /* MEI_SERVICE_H_ */

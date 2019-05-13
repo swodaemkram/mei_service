@@ -9,6 +9,8 @@
  */
 # include "mei_service.h"
 
+char MEI_STATUS[30]= {0}; //GLOBAL STATUS OF THE MEI
+
 int main(int argc, char *argv[])
 {
 
@@ -109,8 +111,6 @@ We will prepare the serial port to setup communications
 			    /*baudrate 9600, 7 bits, even parity, 1 stop bit */
 	set_interface_attribs(fd, B9600);
 	log_Function(comm_port);
-
-
 /*
 ======================================================================================================================
 End of serial port setup
