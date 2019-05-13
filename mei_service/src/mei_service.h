@@ -22,6 +22,7 @@
 #include <sys/time.h>
 #include <signal.h>
 
+
 /* baudrate settings are defined in <asm/termbits.h>, which is
 included by <termios.h> */
 #define BAUDRATE B9600
@@ -75,5 +76,6 @@ int	MEI_RETRIEVE  =  0x0B;
 int	MEI_BOOKMARK = 0x0D;
 
 void log_Function(char *log_message); //provides logging service for mei_service
+void SignalHandler(int signum); //provides signal handling for the service
 
 #endif /* MEI_SERVICE_H_ */
