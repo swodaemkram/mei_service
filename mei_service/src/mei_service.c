@@ -9,12 +9,17 @@
  */
 # include "mei_service.h"
 
-char MEI_STATUS[30]= {0}; //GLOBAL STATUS OF THE MEI
 
+
+char MEI_STATUS[30] = {0}; //GLOBAL STATUS OF THE MEI
+char MEI_CURRENT_COMMAND[30] = {0}; //Global Current command being processing
+char LAST_PACKET[30] = {0}; //Global Last RXed Packet
+char comm_port[250] = {0}; //Comm Port passed by command line
+char rx_packet[30] = {0}; //Global RX Packet
 int main(int argc, char *argv[])
 {
 
-char comm_port[250] = {0}; //Comm Port passed by command line
+
 
 /*
 ==================================================================================================================
@@ -117,19 +122,42 @@ End of serial port setup
 ======================================================================================================================
 */
 signal(SIGTERM,SignalHandler);
+char* rx_packet = {0};
 
 while(1){
+
+unsigned int tx_crc = 0;
+char tx_packet[30] = {0};
 signal(SIGTERM,SignalHandler);
 
+if (strcmp(LAST_PACKET,"") == 0)//if the last RXed Packet is Blank Start a new polling session
+{
+	tx_packet[0] = '\x02';//stuff STX
+	tx_packet[1] = '\x08' ;//Number of Bytes in the packet
+	tx_packet[2] = '\x10' ;//Poll Command
+	tx_packet[3] = '\x00' ;// No Data
+	tx_packet[4] = '\x00' ;// No Data
+	tx_packet[5] = '\x00' ;// No Data
+	tx_packet[6] = '\x00' ;// Set a space for the ETX
+	tx_packet[7] = '\x00' ;// Set a space for the CRC
+	tx_crc = do_crc(tx_packet,8);
+	tx_packet[6] = '\x03' ;// Insert ETX into packet
+	tx_packet[7] = tx_crc ;// Insert CRC into packet
+}
+//log_Function(tx_packet);//DEBUG data to log file
+//printf("\n%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x\n",tx_packet[0],tx_packet[1],tx_packet[2],tx_packet[3],tx_packet[4],tx_packet[5],tx_packet[6],tx_packet[7]); //DEBUG CODE
+
+
+mei_tx(tx_packet, comm_port); //Transmit Packet to MEI
+rx_packet = mei_rx( comm_port); // Receive packet from MEI
 
 
 
-
-
-
+//strcpy(LAST_PACKET,rx_packet);
+usleep(300000);
 
 }//End of our while loop
 
-
+close(fd);
 return(0);
 }

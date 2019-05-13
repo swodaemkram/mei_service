@@ -70,6 +70,7 @@ unsigned int	MEI_GETPERF   =  0x0C;
 unsigned int	MEI_GETBNF		= 0x10;
 unsigned int	MEI_RESET		= 0x7F;
 unsigned int	MEI_EXT       =  0x70;
+
 	// Extension command sub-types
 int	MEI_GETBILLS  =  0x02;
 int	MEI_RETRIEVE  =  0x0B;
@@ -79,6 +80,8 @@ int	MEI_BOOKMARK = 0x0D;
 void log_Function(char *log_message); //provides logging service for mei_service
 void SignalHandler(int signum); //provides signal handling for the service
 int do_crc(char buff[], int buffer_len); //Implementation of the MEI XOR Check Sum
+void mei_tx(char* packet, char* comm_port); //Sends data to MEI
+char *  mei_rx(char* com_port); //Rx Data from MEI
 //--------------------------------End of Available Functions---------------------
 
 #endif /* MEI_SERVICE_H_ */
