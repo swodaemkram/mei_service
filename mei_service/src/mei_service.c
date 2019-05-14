@@ -10,7 +10,6 @@
 # include "mei_service.h"
 
 char comm_port[250] = {0};
-char MEI_STATUS[30] = {0};
 char MEI_CURRENT_COMMAND[30] = "idle";
 char tx_packet[30] = {0};
 
@@ -142,11 +141,12 @@ if (strcmp(rx_packet,"") == 0)//if the last RXed Packet is Blank Start a new pol
 }
 //log_Function(tx_packet);//DEBUG data to log file
 //printf("\n%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x\n",tx_packet[0],tx_packet[1],tx_packet[2],tx_packet[3],tx_packet[4],tx_packet[5],tx_packet[6],tx_packet[7]); //DEBUG CODE
-//\x02\x08\x10\x1f\x14\x00
+//\x02\x08\x10\x1f\x14\x00 // Use this Packet template to get MEI to accept bills
 
 //==================Start of Polling========================
 
-if (rx_packet[2] == '\x20'){
+if (rx_packet[2] == '\x20')
+{
 	tx_packet[2] = '\x11';
     tx_packet[6] = '\x00';
     tx_packet[7] = '\x00';
@@ -155,7 +155,8 @@ if (rx_packet[2] == '\x20'){
     tx_packet[6] = '\x03';
     tx_packet[7] = tx_crc;
 }
-else
+
+if (rx_packet[2] == '\x21')
 {
 	tx_packet[2] = '\x10';
 	tx_packet[6] = '\x00';
@@ -168,9 +169,16 @@ else
 //============================End of Polling================
 
 mei_tx(tx_packet, comm_port); //Transmit Packet to MEI
-mei_rx( comm_port); // Receive packet from MEI
+mei_rx(comm_port); // Receive packet from MEI
 
-//=============================DEBUG CODE to print rx_packet===================
+
+
+
+
+
+
+
+//===========DEBUG CODE to print rx_packet===================
 //int i = 0;
 //while(i < rx_packet_len)
 //{
@@ -180,6 +188,7 @@ mei_rx( comm_port); // Receive packet from MEI
 //printf("\n");
 //============================END DEBUG CODE================
 
+printf("%s\n",MEI_STATUS);
 usleep(300000);
 
 }//End of our while loop

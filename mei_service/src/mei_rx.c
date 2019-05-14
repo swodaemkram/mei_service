@@ -14,6 +14,7 @@
 
 char rx_packet[30] = {0};
 int  rx_packet_len = 0;
+char MEI_STATUS[30] = "idling";
 
 char* mei_rx(char *comm_port)
 {
@@ -95,7 +96,7 @@ Finished Setting up Comm Port
 			    		printf("%02x|",rx_packet[i]);//Print The RXed Hex Packet
 			    		i++;
 			    	}
-			    	printf("\033[0m\n");  //Set Color back to white
+			    	printf("\033[0m");  //Set Color back to white
 
 			    }
 			    rx_packet_len = rdlen;
@@ -129,8 +130,44 @@ while (i < rx_packet_len)
 =================================================================================================================
 End of CRC Check
 =================================================================================================================
- */
+Get RXed Status of MEI
+=================================================================================================================
+*/
 
+switch(rx_packet[3])
+{
+
+case '\x00':
+	  strcpy(MEI_STATUS,"idling");
+	  break;
+case '\x01':
+	  strcpy(MEI_STATUS,"accepting");
+	  break;
+case '\x02':
+	  strcpy(MEI_STATUS,"drawing_in");
+	  break;
+case '\x04':
+	  strcpy(MEI_STATUS,"escrowed");
+	  break;
+case '\x08':
+	  strcpy(MEI_STATUS,"stacking");
+	  break;
+case '\x11':
+	  strcpy(MEI_STATUS,"stacked");
+	  break;
+case '\x20':
+	  strcpy(MEI_STATUS,"processing");
+	  break;
+case '\x41':
+	  strcpy(MEI_STATUS,"returned");
+	  break;
+
+}
+/*
+=================================================================================================================
+END of Getting Status from MEI
+=================================================================================================================
+*/
 
 	return NULL;
 }
