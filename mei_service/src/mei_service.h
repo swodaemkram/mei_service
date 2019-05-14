@@ -22,7 +22,6 @@
 #include <sys/time.h>
 #include <signal.h>
 
-
 /* baudrate settings are defined in <asm/termbits.h>, which is
 included by <termios.h> */
 #define BAUDRATE B9600
@@ -83,5 +82,14 @@ int do_crc(char buff[], int buffer_len); //Implementation of the MEI XOR Check S
 void mei_tx(char* packet, char* comm_port); //Sends data to MEI
 char *  mei_rx(char* com_port); //Rx Data from MEI
 //--------------------------------End of Available Functions---------------------
+
+//--------------------------------Global Variables-------------------------------
+char MEI_STATUS[30] = {0}; //GLOBAL STATUS OF THE MEI
+char MEI_CURRENT_COMMAND[30] = {0}; //Global Current command being processing
+char LAST_PACKET[30] = {0}; //Global Last RXed Packet
+char comm_port[250] = {0}; //Comm Port passed by command line
+char rx_packet[30] = {0}; //Global RX Packet
+//---------------------------------END Of Global Variables-----------------------
+
 
 #endif /* MEI_SERVICE_H_ */

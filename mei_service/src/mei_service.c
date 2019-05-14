@@ -9,13 +9,6 @@
  */
 # include "mei_service.h"
 
-
-
-char MEI_STATUS[30] = {0}; //GLOBAL STATUS OF THE MEI
-char MEI_CURRENT_COMMAND[30] = {0}; //Global Current command being processing
-char LAST_PACKET[30] = {0}; //Global Last RXed Packet
-char comm_port[250] = {0}; //Comm Port passed by command line
-char rx_packet[30] = {0}; //Global RX Packet
 int main(int argc, char *argv[])
 {
 
