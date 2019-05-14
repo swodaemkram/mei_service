@@ -5,7 +5,6 @@
  *      Author: mark
  */
 
-
 #include <termios.h>
 #include <errno.h>
 #include <stdio.h>
@@ -13,16 +12,18 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
+char rx_packet[30] = {0};
+int  rx_packet_len = 0;
 
-char * mei_rx(char *comm_port)
-
+char* mei_rx(char *comm_port)
 {
 /*
 ======================================================================================================================
 Setup Comm Port
 ======================================================================================================================
 */
-	char rx_packet[30] = {0};
+
+
 	int set_interface_attribs(int fd, int speed)
 					{
 					    struct termios tty;
@@ -71,54 +72,57 @@ Setup Comm Port
 					    /*baudrate 9600, 7 bits, even parity, 1 stop bit */
 			set_interface_attribs(fd, B9600);
 
-
-
 /*
 ================================================================================================================
 Finished Setting up Comm Port
 ================================================================================================================
 */
+
 			printf("\033[1;32m"); //Set color to Green
 
-			//do {
+			//do{
+
 			    unsigned char buf[80];
 			    int rdlen;
 			    int i = 0;
 
-			    rdlen = read(fd, buf, sizeof(buf) - 1);
+			    rdlen = read(fd, buf, sizeof(buf) - 1);//Get Data from Comm Port
 			    if (rdlen > 0) {
 
 			    	while(i < rdlen)
 			    	{
 			    		rx_packet[i] = buf[i];
-			    		printf("%02x|",rx_packet[i]);
+			    		printf("%02x|",rx_packet[i]);//Print The RXed Hex Packet
 			    		i++;
 			    	}
 			    	printf("\033[0m\n");  //Set Color back to white
 
 			    }
+			    rx_packet_len = rdlen;
+
+			//} while(rx_packet[rx_packet_len] != '\x03');
+
 /*
 =================================================================================================================
 Got RX Data Need to Check CRC
 =================================================================================================================
 */
 char crc_check_packet[] = {0};
-i = 0;
+ i = 0;
 int calculated_crc = 0;
-char ok[4] = "ok";
 
-while (i < rdlen)
+while (i < rx_packet_len)
 {
 	crc_check_packet[i] = rx_packet[i];
 	i++;
 }
-	crc_check_packet[rdlen - 1] = '\x00';
-	crc_check_packet[rdlen - 2] = '\x00';
-	calculated_crc = do_crc(crc_check_packet,rdlen);
-	printf("Calculated CRC = %02x\n",calculated_crc);
-	if (calculated_crc != rx_packet[rdlen])
+	crc_check_packet[rx_packet_len - 1] = '\x00';
+	crc_check_packet[rx_packet_len - 2] = '\x00';
+	calculated_crc = do_crc(crc_check_packet,rx_packet_len);
+	//printf("Calculated CRC = %02x\n",calculated_crc);
+	if (calculated_crc != rx_packet[rx_packet_len-1])
 	{
-		return(ok) ;
+		return NULL;
 	}
 
 /*
@@ -126,13 +130,7 @@ while (i < rdlen)
 End of CRC Check
 =================================================================================================================
  */
-	i=0;
-	while(i<rdlen)
-	{
-		LAST_PACKET[i] = rx_packet[i] ;
-		i++;
-	}
 
-	return(ok) ;
 
+	return NULL;
 }

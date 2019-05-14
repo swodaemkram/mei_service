@@ -9,10 +9,14 @@
  */
 # include "mei_service.h"
 
+char comm_port[250] = {0};
+char MEI_STATUS[30] = {0};
+char MEI_CURRENT_COMMAND[30] = "idle";
+char tx_packet[30] = {0};
+
+
 int main(int argc, char *argv[])
 {
-
-
 
 /*
 ==================================================================================================================
@@ -115,15 +119,14 @@ End of serial port setup
 ======================================================================================================================
 */
 signal(SIGTERM,SignalHandler);
-char* rx_packet = {0};
 
 while(1){
 
 unsigned int tx_crc = 0;
-char tx_packet[30] = {0};
+
 signal(SIGTERM,SignalHandler);
 
-if (strcmp(LAST_PACKET,"") == 0)//if the last RXed Packet is Blank Start a new polling session
+if (strcmp(rx_packet,"") == 0)//if the last RXed Packet is Blank Start a new polling session
 {
 	tx_packet[0] = '\x02';//stuff STX
 	tx_packet[1] = '\x08' ;//Number of Bytes in the packet
@@ -139,14 +142,44 @@ if (strcmp(LAST_PACKET,"") == 0)//if the last RXed Packet is Blank Start a new p
 }
 //log_Function(tx_packet);//DEBUG data to log file
 //printf("\n%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x\n",tx_packet[0],tx_packet[1],tx_packet[2],tx_packet[3],tx_packet[4],tx_packet[5],tx_packet[6],tx_packet[7]); //DEBUG CODE
+//\x02\x08\x10\x1f\x14\x00
 
+//==================Start of Polling========================
+
+if (rx_packet[2] == '\x20'){
+	tx_packet[2] = '\x11';
+    tx_packet[6] = '\x00';
+    tx_packet[7] = '\x00';
+    tx_crc = 0;
+    tx_crc = do_crc(tx_packet,8);
+    tx_packet[6] = '\x03';
+    tx_packet[7] = tx_crc;
+}
+else
+{
+	tx_packet[2] = '\x10';
+	tx_packet[6] = '\x00';
+	tx_packet[7] = '\x00';
+	tx_crc = 0;
+	tx_crc = do_crc(tx_packet,8);
+	tx_packet[6] = '\x03';
+	tx_packet[7] = tx_crc;
+}
+//============================End of Polling================
 
 mei_tx(tx_packet, comm_port); //Transmit Packet to MEI
-rx_packet = mei_rx( comm_port); // Receive packet from MEI
+mei_rx( comm_port); // Receive packet from MEI
 
+//=============================DEBUG CODE to print rx_packet===================
+//int i = 0;
+//while(i < rx_packet_len)
+//{
+//	printf("%02x|",rx_packet[i]);
+//	i++;
+//}
+//printf("\n");
+//============================END DEBUG CODE================
 
-
-//strcpy(LAST_PACKET,rx_packet);
 usleep(300000);
 
 }//End of our while loop

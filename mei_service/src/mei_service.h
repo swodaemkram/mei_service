@@ -70,25 +70,28 @@ unsigned int	MEI_GETBNF		= 0x10;
 unsigned int	MEI_RESET		= 0x7F;
 unsigned int	MEI_EXT       =  0x70;
 
-	// Extension command sub-types
+// Extension command sub-types
 int	MEI_GETBILLS  =  0x02;
 int	MEI_RETRIEVE  =  0x0B;
 int	MEI_BOOKMARK = 0x0D;
+
 
 //--------------------------------All Available Functions------------------------
 void log_Function(char *log_message); //provides logging service for mei_service
 void SignalHandler(int signum); //provides signal handling for the service
 int do_crc(char buff[], int buffer_len); //Implementation of the MEI XOR Check Sum
 void mei_tx(char* packet, char* comm_port); //Sends data to MEI
-char *  mei_rx(char* com_port); //Rx Data from MEI
+char *mei_rx(char* com_port); //Rx Data from MEI
 //--------------------------------End of Available Functions---------------------
 
 //--------------------------------Global Variables-------------------------------
-char MEI_STATUS[30] = {0}; //GLOBAL STATUS OF THE MEI
-char MEI_CURRENT_COMMAND[30] = {0}; //Global Current command being processing
-char LAST_PACKET[30] = {0}; //Global Last RXed Packet
-char comm_port[250] = {0}; //Comm Port passed by command line
-char rx_packet[30] = {0}; //Global RX Packet
+extern char MEI_STATUS[30]; //GLOBAL STATUS OF THE MEI
+extern char MEI_CURRENT_COMMAND[30]; //Global Current command being processing
+extern char LAST_PACKET[30]; //Global Last RXed Packet
+extern char comm_port[250]; //Comm Port passed by command line
+extern char rx_packet[30]; //Global RX Packet
+extern int rx_packet_len; //Global Length of RXed Packet
+extern char tx_packet[30];//Global TX packet
 //---------------------------------END Of Global Variables-----------------------
 
 
