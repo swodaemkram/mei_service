@@ -82,6 +82,7 @@ void SignalHandler(int signum); //provides signal handling for the service
 int do_crc(char buff[], int buffer_len); //Implementation of the MEI XOR Check Sum
 void mei_tx(char* packet, char* comm_port); //Sends data to MEI
 void mei_rx(char* com_port); //Rx Data from MEI
+void get_command_from_file(void);//Read a command from a file
 //--------------------------------End of Available Functions---------------------
 
 //--------------------------------Global Variables-------------------------------
@@ -93,6 +94,7 @@ extern char rx_packet[30]; //Global RX Packet
 extern int rx_packet_len; //Global Length of RXed Packet
 extern char tx_packet[30];//Global TX packet
 extern int is_comm_port_open;
+
 //---------------------------------END Of Global Variables-----------------------
 
 

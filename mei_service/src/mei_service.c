@@ -10,9 +10,8 @@
 # include "mei_service.h"
 
 char comm_port[250] = {0};
-char MEI_CURRENT_COMMAND[30] = "idle";
+//char MEI_CURRENT_COMMAND[30] = "idle";
 char tx_packet[30] = {0};
-
 
 int main(int argc, char *argv[])
 {
@@ -35,7 +34,7 @@ Finished processing the service startup commands
 Make Sure We Only Run Once
 ===================================================================================================================
 */
-/*	FILE *pid_lock = NULL;                            	// declare pid lock file
+	FILE *pid_lock = NULL;                            	// declare pid lock file
 
 		pid_lock = fopen("/run/mei_service.pid", "r");
 		if (pid_lock != NULL){
@@ -56,7 +55,7 @@ Make Sure We Only Run Once
 		fwrite(strpid,1,sizeof(strpid),pid_lock);
 		fclose(pid_lock);										// Close pid lock file
 
-*/		log_Function("mei_service has started");
+		log_Function("mei_service has started");
 /*
 ======================================================================================================================
 end of run once check
@@ -125,15 +124,7 @@ if (rx_packet[2] == '\x21')
 //============================End of Polling================
 //====================Business  Logic for MEI===============
 
-
-
-
-
-
-
-
-
-
+get_command_from_file();      //Get Command from File
 mei_tx(tx_packet, comm_port); //Transmit Packet to MEI
 mei_rx(comm_port);            // Receive packet from MEI
 
@@ -148,8 +139,16 @@ mei_rx(comm_port);            // Receive packet from MEI
 //}
 //printf("\n");
 //============================END DEBUG CODE================
+printf("\nCurrent Command = %s\n",MEI_CURRENT_COMMAND);
+printf("Current Status = %s\n",MEI_STATUS);
 
-printf("%s",MEI_STATUS);
+//======================Process Stop Command================
+if(strncmp(MEI_CURRENT_COMMAND,"stop",4)==0)
+{
+ 	log_Function("Stop Command Received Shutting Down Service ....");
+ 	SignalHandler(1);
+}
+//==========================End of Stop Command=============
 usleep(300000);
 
 }//End of our while loop
