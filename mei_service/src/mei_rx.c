@@ -15,10 +15,13 @@
 char rx_packet[30] = {0};
 int  rx_packet_len = 0;
 char MEI_STATUS[30] = "idling";
+int is_comm_port_open = 0;
 
 void mei_rx(char *comm_port)
 
 {
+//printf("MEI_RX CALLED\n");//DEBUG
+
 /*
 ======================================================================================================================
 Setup Comm Port
@@ -64,7 +67,11 @@ Setup Comm Port
 			    int fd;
 			    //int wlen;
 
-			    fd = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
+
+
+			    	fd = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
+
+
 			    if (fd < 0) {
 			        printf("Error opening %s: %s\n", portname, strerror(errno));
 			        exit(1);
@@ -77,16 +84,18 @@ Setup Comm Port
 Finished Setting up Comm Port
 ================================================================================================================
 */
+			    fcntl(fd, F_SETFL, FNDELAY);//THIS IS HUGELY IMPORTANT !!! MAKES THE SERIALPORT NON-BLOCKING
 
-			printf("\033[1;32m"); //Set color to Green
-
-			//do{
+			    printf("\033[1;32m"); //Set color to Green
 
 			    unsigned char buf[80];
-			    int rdlen;
+			    int rdlen = 0;
 			    int i = 0;
 
-			    rdlen = read(fd, buf, sizeof(buf) - 1);//Get Data from Comm Port
+
+			    rdlen = read(fd, buf, sizeof(buf) -1);//Get Data from Comm Port was -1
+
+
 			    if (rdlen > 0) {
 
 			    	while(i < rdlen)
@@ -94,13 +103,19 @@ Finished Setting up Comm Port
 			    		rx_packet[i] = buf[i];
 			    		printf("%02x|",rx_packet[i]);//Print The RXed Hex Packet
 			    		i++;
-			    	}
+			       	}
 			    	printf("\033[0m");  //Set Color back to white
 
 			    }
+
+
 			    rx_packet_len = rdlen;
 
-			//} while(rx_packet[rx_packet_len] != '\x03');
+			    if (rx_packet_len < 1)
+			    {
+			    	rx_packet[0] = '\x00';
+			    	rx_packet_len = 1;
+			    }
 
 /*
 =================================================================================================================
@@ -122,8 +137,9 @@ while (i < rx_packet_len)
 	//printf("Calculated CRC = %02x\n",calculated_crc);
 	if (calculated_crc != rx_packet[rx_packet_len-1])
 	{
-		close(fd);
 		rx_packet[0] = '\x00';
+		rx_packet_len = 1;
+		printf("BAD CRC RXed\n");
 		return;
 	}
 
@@ -134,6 +150,12 @@ End of CRC Check
 Get RXed Status of MEI
 =================================================================================================================
 */
+
+if (rx_packet_len <= 1)
+{
+	strcpy(MEI_STATUS,"dissconnected");
+	return;
+}
 
 switch(rx_packet[3])
 {
@@ -169,6 +191,7 @@ case '\x41':
 END of Getting Status from MEI
 =================================================================================================================
 */
+
 return;
 }
 

@@ -14,6 +14,7 @@
 
 void mei_tx(char* tx_packet, char* comm_port)
 {
+	//printf("\nMEI_TX CALLED !\n");
 	//char comm_port[250] = {0}; //Comm Port passed by command line
 	int set_interface_attribs(int fd, int speed)
 				{

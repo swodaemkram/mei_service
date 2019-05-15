@@ -35,7 +35,7 @@ Finished processing the service startup commands
 Make Sure We Only Run Once
 ===================================================================================================================
 */
-	FILE *pid_lock = NULL;                            	// declare pid lock file
+/*	FILE *pid_lock = NULL;                            	// declare pid lock file
 
 		pid_lock = fopen("/run/mei_service.pid", "r");
 		if (pid_lock != NULL){
@@ -56,7 +56,7 @@ Make Sure We Only Run Once
 		fwrite(strpid,1,sizeof(strpid),pid_lock);
 		fclose(pid_lock);										// Close pid lock file
 
-		log_Function("mei_service has started");
+*/		log_Function("mei_service has started");
 /*
 ======================================================================================================================
 end of run once check
@@ -141,7 +141,7 @@ mei_rx(comm_port); // Receive packet from MEI
 //printf("\n");
 //============================END DEBUG CODE================
 
-printf("%s\n",MEI_STATUS);
+printf("%s",MEI_STATUS);
 usleep(300000);
 
 }//End of our while loop

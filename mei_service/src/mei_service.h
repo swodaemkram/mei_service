@@ -92,6 +92,7 @@ extern char comm_port[250]; //Comm Port passed by command line
 extern char rx_packet[30]; //Global RX Packet
 extern int rx_packet_len; //Global Length of RXed Packet
 extern char tx_packet[30];//Global TX packet
+extern int is_comm_port_open;
 //---------------------------------END Of Global Variables-----------------------
 
 
