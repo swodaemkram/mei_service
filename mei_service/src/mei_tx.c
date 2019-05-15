@@ -68,9 +68,9 @@ void mei_tx(char* tx_packet, char* comm_port)
 				    /*baudrate 9600, 7 bits, even parity, 1 stop bit */
 		set_interface_attribs(fd, B9600);
 		printf("\033[1;31m\n%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x\n\033[0m",tx_packet[0],tx_packet[1],tx_packet[2],tx_packet[3],tx_packet[4],tx_packet[5],tx_packet[6],tx_packet[7]); //DEBUG CODE
-
 		write(fd,tx_packet,sizeof(tx_packet));
 		tcdrain(fd);    /* delay for output */
+
 close(fd);
 return;
 }

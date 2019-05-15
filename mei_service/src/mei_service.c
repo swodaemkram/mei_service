@@ -64,7 +64,7 @@ end of run once check
 Start Domain Socket For Commands
 ======================================================================================================================
 */
-
+//domain_socket_server_setup();
 
 
 /*
@@ -123,14 +123,22 @@ if (rx_packet[2] == '\x21')
 	tx_packet[7] = tx_crc;
 }
 //============================End of Polling================
+//====================Business  Logic for MEI===============
+
+
+
+
+
+
+
+
+
 
 mei_tx(tx_packet, comm_port); //Transmit Packet to MEI
-mei_rx(comm_port); // Receive packet from MEI
+mei_rx(comm_port);            // Receive packet from MEI
 
-
-
-
-
+//domain_socket_server();
+//===========END OF Business Logic===========================
 //===========DEBUG CODE to print rx_packet===================
 //int i = 0;
 //while(i < rx_packet_len)

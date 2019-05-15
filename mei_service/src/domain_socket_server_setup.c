@@ -30,7 +30,7 @@ void domain_socket_server_setup (void)
 
     /* Repeatedly accept connections, spinning off one server() to deal
        with  each  client.  Continue  until  a  client  sends  a  "quit"  message.   */
-    do {
+   // do {
       struct sockaddr_un client_name;
       socklen_t client_name_len;
       int client_socket_fd;
@@ -38,17 +38,17 @@ void domain_socket_server_setup (void)
       /* Accept a connection.   */
       client_socket_fd = accept (socket_fd, &client_name, &client_name_len);
       /* Handle the connection.   */
-      client_sent_quit_message = server (client_socket_fd);
+      //client_sent_quit_message = server (client_socket_fd);
       /* Close our end of the connection.   */
-      close (client_socket_fd);
+      //close (client_socket_fd);
 
-    }
+    //}
 
-    while (!client_sent_quit_message);
+    //while (!client_sent_quit_message);
 
     /* Remove the socket file.   */
 
-    close (socket_fd);
-    unlink (socket_name);
+    //close (socket_fd);
+    //unlink (socket_name);
  return;
 }

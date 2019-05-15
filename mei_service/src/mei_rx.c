@@ -115,6 +115,7 @@ Finished Setting up Comm Port
 			    {
 			    	rx_packet[0] = '\x00';
 			    	rx_packet_len = 1;
+			    	printf("\033[0m");  //Set Color back to white
 			    }
 
 /*
@@ -191,7 +192,7 @@ case '\x41':
 END of Getting Status from MEI
 =================================================================================================================
 */
-
+close(fd);
 return;
 }
 
