@@ -16,62 +16,61 @@ char rx_packet[30] = {0};
 int  rx_packet_len = 0;
 char MEI_STATUS[30] = "idling";
 
-char* mei_rx(char *comm_port)
+void mei_rx(char *comm_port)
+
 {
 /*
 ======================================================================================================================
 Setup Comm Port
 ======================================================================================================================
 */
-
-
 	int set_interface_attribs(int fd, int speed)
-					{
-					    struct termios tty;
+			{
+			    struct termios tty;
 
-					    if (tcgetattr(fd, &tty) < 0) {
-					        printf("Error from tcgetattr: %s\n", strerror(errno));
-					        return -1;
-					    }
+			    if (tcgetattr(fd, &tty) < 0) {
+			        printf("Error from tcgetattr: %s\n", strerror(errno));
+			        return -1;
+			    }
 
-					    cfsetospeed(&tty, (speed_t)speed);
-					    cfsetispeed(&tty, (speed_t)speed);
+			    cfsetospeed(&tty, (speed_t)speed);
+			    cfsetispeed(&tty, (speed_t)speed);
 
-					    tty.c_cflag |= (CLOCAL | CREAD);    /* ignore modem controls */
-					    tty.c_cflag &= ~CSIZE;
-					    tty.c_cflag |=  CS7;         /* 7-bit characters  pipes = yes ampersands and Tildes= no */
-					    tty.c_cflag |=  PARENB;     /* even parity bit */
-					    tty.c_cflag &= ~CSTOPB;     /* only need 1 stop bit */
-					    tty.c_cflag &= ~CRTSCTS;    /* no hardware flowcontrol */
+			    tty.c_cflag |= (CLOCAL | CREAD);    /* ignore modem controls */
+			    tty.c_cflag &= ~CSIZE;
+			    tty.c_cflag |=  CS7;         /* 7-bit characters  pipes = yes ampersands and Tildes= no */
+			    tty.c_cflag |=  PARENB;     /* even parity bit */
+			    tty.c_cflag &= ~CSTOPB;     /* only need 1 stop bit */
+			    tty.c_cflag &= ~CRTSCTS;    /* no hardware flowcontrol */
 
-					    /* setup for non-canonical mode */
+			    /* setup for non-canonical mode */
 
-					    tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
-					    tty.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
-					    tty.c_oflag &= ~OPOST;
+			    tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
+			    tty.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
+			    tty.c_oflag &= ~OPOST;
 
-					    /* fetch bytes as they become available */
-					    tty.c_cc[VMIN] = 1;
-					    tty.c_cc[VTIME] = 1;
+			    /* fetch bytes as they become available */
+			    tty.c_cc[VMIN] = 1;
+			    tty.c_cc[VTIME] = 1;
 
-					    if (tcsetattr(fd, TCSANOW, &tty) != 0) {
-					        printf("Error from tcsetattr: %s\n", strerror(errno));
-					        return -1;
-					    }
-					    return 0;
-					}
+			    if (tcsetattr(fd, TCSANOW, &tty) != 0) {
+			        printf("Error from tcsetattr: %s\n", strerror(errno));
+			        return -1;
+			    }
+			    return 0;
+			}
 
-					char *portname = comm_port;
-					    int fd;
-					    //int wlen;
+			char *portname = comm_port;
+			    int fd;
+			    //int wlen;
 
-					    fd = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
-					    if (fd < 0) {
-					        printf("Error opening %s: %s\n", portname, strerror(errno));
-					        exit(1);
-					    }
-					    /*baudrate 9600, 7 bits, even parity, 1 stop bit */
-			set_interface_attribs(fd, B9600);
+			    fd = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
+			    if (fd < 0) {
+			        printf("Error opening %s: %s\n", portname, strerror(errno));
+			        exit(1);
+			    }
+			    /*baudrate 9600, 7 bits, even parity, 1 stop bit */
+			    set_interface_attribs(fd, B9600);
 
 /*
 ================================================================================================================
@@ -123,7 +122,9 @@ while (i < rx_packet_len)
 	//printf("Calculated CRC = %02x\n",calculated_crc);
 	if (calculated_crc != rx_packet[rx_packet_len-1])
 	{
-		return NULL;
+		close(fd);
+		rx_packet[0] = '\x00';
+		return;
 	}
 
 /*
@@ -168,6 +169,10 @@ case '\x41':
 END of Getting Status from MEI
 =================================================================================================================
 */
-
-	return NULL;
+return;
 }
+
+
+
+
+

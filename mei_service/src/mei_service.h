@@ -81,7 +81,7 @@ void log_Function(char *log_message); //provides logging service for mei_service
 void SignalHandler(int signum); //provides signal handling for the service
 int do_crc(char buff[], int buffer_len); //Implementation of the MEI XOR Check Sum
 void mei_tx(char* packet, char* comm_port); //Sends data to MEI
-char *mei_rx(char* com_port); //Rx Data from MEI
+void mei_rx(char* com_port); //Rx Data from MEI
 //--------------------------------End of Available Functions---------------------
 
 //--------------------------------Global Variables-------------------------------

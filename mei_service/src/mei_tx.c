@@ -21,6 +21,7 @@ void mei_tx(char* tx_packet, char* comm_port)
 
 				    if (tcgetattr(fd, &tty) < 0) {
 				        printf("Error from tcgetattr: %s\n", strerror(errno));
+				        close(fd);
 				        return -1;
 				    }
 
@@ -46,9 +47,12 @@ void mei_tx(char* tx_packet, char* comm_port)
 
 				    if (tcsetattr(fd, TCSANOW, &tty) != 0) {
 				        printf("Error from tcsetattr: %s\n", strerror(errno));
+				        close(fd);
 				        return -1;
 				    }
-				    return 0;
+
+
+				   // return 0;
 				}
 
 				char *portname = comm_port;
@@ -66,6 +70,6 @@ void mei_tx(char* tx_packet, char* comm_port)
 
 		write(fd,tx_packet,sizeof(tx_packet));
 		tcdrain(fd);    /* delay for output */
-
+close(fd);
 return;
 }
