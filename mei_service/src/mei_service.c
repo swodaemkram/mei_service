@@ -125,7 +125,7 @@ if (rx_packet[2] == '\x21')
 //====================Business  Logic for MEI===============
 get_command_from_file();      //Get Command from File
 
-//===============================Send Stack Command To MEI=======================
+//===============================Start of Stack Command=========================================
 if(strncmp(MEI_CURRENT_COMMAND,"stack",5)==0) //Has the "stack" command been RXed
 {
 	tx_packet[3] = '\x1f';
@@ -139,8 +139,7 @@ if(strncmp(MEI_CURRENT_COMMAND,"stack",5)==0) //Has the "stack" command been RXe
 }
 if(strncmp(MEI_CURRENT_COMMAND,"stack",5)==0 && strncmp(MEI_STATUS,"escrowed",8)==0)
 {
-	//TODO SEND STACK COMMAND "\x02\x08\x10\x7f\x3c\x00\x00\x00"
-	tx_packet[3] = '\x7f';
+	tx_packet[3] = '\x7f';                   //We are sending the Stack Command in this part
 	tx_packet[4] = '\x3c';
 	tx_packet[6] = '\x00';
 	tx_packet[7] = '\x00';
@@ -149,18 +148,12 @@ if(strncmp(MEI_CURRENT_COMMAND,"stack",5)==0 && strncmp(MEI_STATUS,"escrowed",8)
 	tx_packet[6] = '\x03';
 	tx_packet[7] = tx_crc;
 }
-
+//============================END OF Stacking Service============================================
 
 
 
 mei_tx(tx_packet, comm_port); //Transmit Packet to MEI
 mei_rx(comm_port);            // Receive packet from MEI
-
-
-
-
-
-
 
 
 
