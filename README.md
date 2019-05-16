@@ -11,11 +11,11 @@ For example a command line connector or a domain socket connector or a REST tcp/
  The service will provide the following
  
  COMMANDS:
- reset
- verify
- stack
- info
- cancel
+ reset,
+ verify,
+ stack,
+ info,
+ cancel,
  status|-----REPLYS
                 |_busy
                 |_stacking
