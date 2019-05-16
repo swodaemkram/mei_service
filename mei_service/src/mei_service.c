@@ -9,6 +9,7 @@
  */
 # include "mei_service.h"
 
+
 char comm_port[250] = {0};
 //char MEI_CURRENT_COMMAND[30] = "idle";
 char tx_packet[30] = {0};
@@ -71,6 +72,9 @@ Start Domain Socket For Commands
 End of Setting up a Domain Socket
 ======================================================================================================================
  */
+
+log_Function("MEI Service Started using");
+log_Function(comm_port);
 
 signal(SIGTERM,SignalHandler);
 
@@ -141,8 +145,8 @@ process_response();
 //}
 //printf("\n");
 //============================END DEBUG CODE================
-printf("\nCurrent Command = %s\n",MEI_CURRENT_COMMAND);
-printf("Current Status = %s\n",MEI_STATUS);
+//printf("\nCurrent Command = %s\n",MEI_CURRENT_COMMAND);
+//printf("Current Status = %s\n",MEI_STATUS);
 
 //======================Process Stop Command================
 if(strncmp(MEI_CURRENT_COMMAND,"stop",4)==0)

@@ -7,6 +7,7 @@
 
 extern char rx_packet[30];
 extern char MEI_STATUS[30];
+char LAST_MEI_STATUS[30];
 
 void process_response (void)
 {
@@ -40,15 +41,35 @@ void process_response (void)
 		  break;
 
 	}
-//------------------------------Detect Cassette Removal---------------------------------------
+//===========================Detect Cassette Removal=========================================
     if (strncmp(MEI_STATUS,"stacked",7)==0 && rx_packet[5] == '\x00')
     {
     	strcpy(MEI_STATUS,"cassette_removed");
     }
-//---------------------------End of Cassette Removal Detection--------------------------------
+//======================End of Cassette Removal Detection====================================
+//============================Determine Dnom Stacked=========================================
+    if (strncmp(MEI_STATUS,"stacked",7)==0 && rx_packet[5] != '\x00')
+    {
+    	switch (rx_packet[5])
+    	{
+    	case '\x08':
+    		strcpy(MEI_STATUS,"stacked_dnom_1"); //USD $1.00
+    		break;
+    	case '\x28':
+    		strcpy(MEI_STATUS,"stacked_dnom_4"); //USD $20.00
+    		break;
 
+    	}
 
-
+    }
+//=============================END of Dnomm Determination====================================
+//==========================LOG ONLY CHANGES IN STATUS=======================================
+if (strcmp(MEI_STATUS,LAST_MEI_STATUS)!=0)
+{
+	log_Function(MEI_STATUS);
+	strcpy(LAST_MEI_STATUS,MEI_STATUS);
+}
+//============================END OF STATUS LOGGING==========================================
 
 	return;
 }

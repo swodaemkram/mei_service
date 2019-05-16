@@ -97,6 +97,8 @@ extern char rx_packet[30]; //Global RX Packet
 extern int rx_packet_len; //Global Length of RXed Packet
 extern char tx_packet[30];//Global TX packet
 extern int is_comm_port_open; //Global Comm Port Status
+extern char MEI_LAST_COMMAND[30];
+extern char LAST_MEI_STATUS[30];
 //---------------------------------END Of Global Variables-----------------------
 
 

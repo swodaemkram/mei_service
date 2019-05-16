@@ -141,6 +141,7 @@ while (i < rx_packet_len)
 		rx_packet[0] = '\x00';
 		rx_packet_len = 1;
 		printf("BAD CRC RXed\n");
+		log_Function("BAD CRC RXed !");
 		return;
 	}
 
@@ -155,6 +156,7 @@ Get RXed Status of MEI
 if (rx_packet_len <= 1)
 {
 	strcpy(MEI_STATUS,"dissconnected");
+	log_Function(MEI_STATUS);
 	return;
 }
 
