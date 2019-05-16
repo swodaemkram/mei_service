@@ -62,7 +62,24 @@ void process_response (void)
     	}
 
     }
-//=============================END of Dnomm Determination====================================
+//=============================END of Dnom Determination====================================
+//====================================Dnom Returned==========================================
+    //log_Function(MEI_STATUS);
+    if (strncmp(MEI_STATUS,"returned",8)==0 )
+    {
+    	switch (rx_packet[5])
+    	    	{
+    	    	case '\x08':
+    	    		strcpy(MEI_STATUS,"verified_dnom_1"); //USD $1.00
+    	    		break;
+    	    	case '\x28':
+    	    		strcpy(MEI_STATUS,"verified_dnom_4"); //USD $20.00
+    	    		break;
+
+    	    	}
+
+    }
+//=================================End of Dnom Returned=====================================
 //==========================LOG ONLY CHANGES IN STATUS=======================================
 if (strcmp(MEI_STATUS,LAST_MEI_STATUS)!=0)
 {

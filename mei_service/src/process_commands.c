@@ -101,6 +101,13 @@ void process_commands(void)
 
           }
 //==================================End of Verify  Command=======================================
+//===============================Detailed Information Command====================================
+    if(strncmp(MEI_CURRENT_COMMAND,"info",4)== 0)
+    	{
+    	detailed_info_command();
+    	}
+
+//=================================End of Detailed Information===================================
 //===============================LOG ONLY CHANGES================================================
 	if(strcmp(MEI_CURRENT_COMMAND,MEI_LAST_COMMAND)!= 0)
 	{
