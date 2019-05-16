@@ -66,10 +66,41 @@ void process_commands(void)
 							tx_crc = do_crc(tx_packet,8);
 							tx_packet[6] = '\x03';
 							tx_packet[7] = tx_crc;
-							sleep(2);
+							sleep(3);
 
 		}
 //==================================END of Reset Command=========================================
+//=================================Start of Verify Command=======================================
+         if(strncmp(MEI_CURRENT_COMMAND,"verify",6)== 0 && strncmp(MEI_STATUS,"escrowed") != 0)
+
+         {
+        	 tx_packet[3] = '\x1f';
+        	 tx_packet[4] = '\x14';
+        	 tx_packet[5] = '\x00';
+        	 tx_packet[6] = '\x00';
+        	 tx_packet[7] = '\x00';
+        	 tx_crc = 0;
+        	 tx_crc = do_crc(tx_packet,8);
+        	 tx_packet[6] = '\x03';
+        	 tx_packet[7] = tx_crc;
+         }
+
+         if(strncmp(MEI_CURRENT_COMMAND,"verify",6) == 0 && strncmp(MEI_STATUS,"escrowed") == 0)
+
+         {
+
+        	 tx_packet[3] = '\x00';
+        	 tx_packet[4] = '\x5c';    //Return Document Command
+        	 tx_packet[5] = '\x00';
+        	 tx_packet[6] = '\x00';
+        	 tx_packet[7] = '\x00';
+        	 tx_crc = 0;
+        	 tx_crc = do_crc(tx_packet,8);
+        	 tx_packet[6] = '\x03';
+        	 tx_packet[7] = tx_crc;
+
+          }
+//==================================End of Verify  Command=======================================
 //===============================LOG ONLY CHANGES================================================
 	if(strcmp(MEI_CURRENT_COMMAND,MEI_LAST_COMMAND)!= 0)
 	{
