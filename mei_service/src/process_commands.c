@@ -53,12 +53,33 @@ void process_commands(void)
 
 	}
 //===============================END OF Idle Command=============================================
+//=====================================Reset Command=============================================
+		if(strncmp(MEI_CURRENT_COMMAND,"reset",5)== 0 && strncmp(MEI_STATUS, "accepting",9) == 0 )
+		{
+							tx_packet[2] = '\x60';        //Expanded Command Mode
+                			tx_packet[3] = '\x7f';        //We are sending the reset Command
+							tx_packet[4] = '\x7f';        //"\x02\x08\x60\x7f\x7f\x7f\x03"
+							tx_packet[5] = '\x7f';
+							tx_packet[6] = '\x00';
+							tx_packet[7] = '\x00';
+							tx_crc = 0;
+							tx_crc = do_crc(tx_packet,8);
+							tx_packet[6] = '\x03';
+							tx_packet[7] = tx_crc;
+							sleep(2);
+
+		}
+//==================================END of Reset Command=========================================
 //===============================LOG ONLY CHANGES================================================
 	if(strcmp(MEI_CURRENT_COMMAND,MEI_LAST_COMMAND)!= 0)
 	{
-		log_Function(MEI_CURRENT_COMMAND);
+		char log_message[250] ={0};
+		sprintf(log_message,"Command Issued = %s",MEI_CURRENT_COMMAND);
+		log_Function(log_message);
 		strcpy(MEI_LAST_COMMAND,MEI_CURRENT_COMMAND);
 	}
 //==================================END OF LOGGING===============================================
+
+
 	return;
 }

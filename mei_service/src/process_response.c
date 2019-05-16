@@ -66,7 +66,9 @@ void process_response (void)
 //==========================LOG ONLY CHANGES IN STATUS=======================================
 if (strcmp(MEI_STATUS,LAST_MEI_STATUS)!=0)
 {
-	log_Function(MEI_STATUS);
+	char log_message[30] = {0};
+	sprintf(log_message,"MEI Response = %s",MEI_STATUS);
+	log_Function(log_message);
 	strcpy(LAST_MEI_STATUS,MEI_STATUS);
 }
 //============================END OF STATUS LOGGING==========================================
