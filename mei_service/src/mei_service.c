@@ -124,41 +124,13 @@ if (rx_packet[2] == '\x21')
 //============================End of Polling================
 //====================Business  Logic for MEI===============
 get_command_from_file();      //Get Command from File
-
-//===============================Start of Stack Command=========================================
-if(strncmp(MEI_CURRENT_COMMAND,"stack",5)==0) //Has the "stack" command been RXed
-{
-	tx_packet[3] = '\x1f';
-	tx_packet[4] = '\x14';
-	tx_packet[6] = '\x00';
-	tx_packet[7] = '\x00';
-	tx_crc = 0;
-	tx_crc = do_crc(tx_packet,8);
-	tx_packet[6] = '\x03';
-	tx_packet[7] = tx_crc;
-}
-if(strncmp(MEI_CURRENT_COMMAND,"stack",5)==0 && strncmp(MEI_STATUS,"escrowed",8)==0)
-{
-	tx_packet[3] = '\x7f';                   //We are sending the Stack Command in this part
-	tx_packet[4] = '\x3c';
-	tx_packet[6] = '\x00';
-	tx_packet[7] = '\x00';
-	tx_crc = 0;
-	tx_crc = do_crc(tx_packet,8);
-	tx_packet[6] = '\x03';
-	tx_packet[7] = tx_crc;
-}
-//============================END OF Stacking Service============================================
-
-
-
+//domain_socket_server();
+process_commands();
 mei_tx(tx_packet, comm_port); //Transmit Packet to MEI
 mei_rx(comm_port);            // Receive packet from MEI
+process_response();
 
 
-
-
-//domain_socket_server();
 //===========END OF Business Logic===========================
 //===========DEBUG CODE to print rx_packet===================
 //int i = 0;

@@ -83,6 +83,9 @@ int do_crc(char buff[], int buffer_len); //Implementation of the MEI XOR Check S
 void mei_tx(char* packet, char* comm_port); //Sends data to MEI
 void mei_rx(char* com_port); //Rx Data from MEI
 void get_command_from_file(void);//Read a command from a file
+void process_commands(void); //Process Incoming commands
+void process_response(void); //Process Response from MEI
+char * clean_text(char *text, int len_text); //return printable Characters only
 //--------------------------------End of Available Functions---------------------
 
 //--------------------------------Global Variables-------------------------------
@@ -93,8 +96,7 @@ extern char comm_port[250]; //Comm Port passed by command line
 extern char rx_packet[30]; //Global RX Packet
 extern int rx_packet_len; //Global Length of RXed Packet
 extern char tx_packet[30];//Global TX packet
-extern int is_comm_port_open;
-
+extern int is_comm_port_open; //Global Comm Port Status
 //---------------------------------END Of Global Variables-----------------------
 
 

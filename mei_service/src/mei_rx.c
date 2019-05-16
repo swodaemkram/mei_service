@@ -158,35 +158,6 @@ if (rx_packet_len <= 1)
 	return;
 }
 
-switch(rx_packet[3])
-{
-
-case '\x00':
-	  strcpy(MEI_STATUS,"idling");
-	  break;
-case '\x01':
-	  strcpy(MEI_STATUS,"accepting");
-	  break;
-case '\x02':
-	  strcpy(MEI_STATUS,"drawing_in");
-	  break;
-case '\x04':
-	  strcpy(MEI_STATUS,"escrowed");
-	  break;
-case '\x08':
-	  strcpy(MEI_STATUS,"stacking");
-	  break;
-case '\x11':
-	  strcpy(MEI_STATUS,"stacked");
-	  break;
-case '\x20':
-	  strcpy(MEI_STATUS,"processing");
-	  break;
-case '\x41':
-	  strcpy(MEI_STATUS,"returned");
-	  break;
-
-}
 /*
 =================================================================================================================
 END of Getting Status from MEI
