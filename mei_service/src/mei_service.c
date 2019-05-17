@@ -69,10 +69,14 @@ Start Domain Socket For Commands
 End of Setting up a Domain Socket
 ======================================================================================================================
  */
-log_Function("========================================");
-log_Function("MEI Service Started using");
-log_Function(comm_port);
-log_Function("========================================");
+log_Function("================================================");
+char log_message[30];
+sprintf(log_message,"MEI Service Starting using %s",comm_port);
+log_Function(log_message);
+log_Function("Ver 01.00.00");
+//log_Function("MEI Service Started using");
+//log_Function(comm_port);
+log_Function("================================================");
 signal(SIGTERM,SignalHandler);
 
 while(1){
