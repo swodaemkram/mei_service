@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-char rx_packet[30] = {0};
+char rx_packet[40] = {0};
 int  rx_packet_len = 0;
 char MEI_STATUS[30] = "idling";
 int is_comm_port_open = 0;
@@ -138,7 +138,7 @@ while (i < rx_packet_len)
 	//printf("Calculated CRC = %02x\n",calculated_crc);
 	if (calculated_crc != rx_packet[rx_packet_len-1])
 	{
-		bzero(rx_packet,30);
+		bzero(rx_packet,40);
 		//rx_packet[0] = '\x00';
 		//rx_packet_len = 1;
 		printf("BAD CRC RXed\n");

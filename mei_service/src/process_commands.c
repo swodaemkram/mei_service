@@ -8,7 +8,13 @@ extern char MEI_CURRENT_COMMAND[30];
 extern char tx_packet[30];
 extern char MEI_STATUS[30];
 char MEI_LAST_COMMAND[30] = {0};
+int GET_MODEL_ONETIME = 0;
 int GET_INFO_ONETIME = 0;
+int GET_SERIAL_ONETIME = 0;
+int GET_BOOTVER_ONETIME = 0;
+int GET_APPVER_ONETIME = 0;
+int GET_VARNAME_ONETIME = 0;
+
 
 void process_commands(void)
 {
@@ -102,15 +108,8 @@ void process_commands(void)
 
           }
 //==================================End of Verify  Command=======================================
-//===============================Detailed Information Command====================================
-    if(strncmp(MEI_CURRENT_COMMAND,"info",4)== 0 && GET_INFO_ONETIME == 0)
-    	{
 
 
-    	detailed_info_command();
-    	}
-
-//=================================End of Detailed Information===================================
 //===============================LOG ONLY CHANGES================================================
 	if(strcmp(MEI_CURRENT_COMMAND,MEI_LAST_COMMAND)!= 0)
 	{
@@ -118,9 +117,52 @@ void process_commands(void)
 		sprintf(log_message,"Command Issued = %s",MEI_CURRENT_COMMAND);
 		log_Function(log_message);
 		strcpy(MEI_LAST_COMMAND,MEI_CURRENT_COMMAND);
+		GET_MODEL_ONETIME = 0; //Reset Run Command Once Flag
+		GET_SERIAL_ONETIME = 0;//Reset Run Command Once Flag
+		GET_BOOTVER_ONETIME = 0;//Reset Run Command Once Flag
+		GET_APPVER_ONETIME = 0;//Reset Run Command Once Flag
+		GET_VARNAME_ONETIME = 0;//Reset Run Command Once Flag
 	}
 //==================================END OF LOGGING===============================================
+// ^^^^^^^^^^^^ ALL SINGLE RUN COMMANDS NEED TO BE BELOW THIS  ^^^^^^^^^^^^^^^^
+//=================================Get Serial Command============================================
+    if(strncmp(MEI_CURRENT_COMMAND,"serial",6)== 0 && GET_SERIAL_ONETIME == 0)
+   	{
+    	get_serial();
+   	}
+//==================================End of Get Serial command====================================
+//===============================GET MODEL Command===============================================
+    if(strncmp(MEI_CURRENT_COMMAND,"model",5)== 0 && GET_MODEL_ONETIME == 0)
+   	{
+       	get_model();
+   	}
+//=================================End of GET MODEL command======================================
+//=================================Get BOOT Version==============================================
+    if(strncmp(MEI_CURRENT_COMMAND,"bootver",7)== 0 && GET_BOOTVER_ONETIME == 0)
+  	{
+       	get_bootver();
+   	}
+//==================================END of Get Boot Version======================================
+//==================================Get APPVER Command===========================================
+    if(strncmp(MEI_CURRENT_COMMAND,"appver",6)== 0 && GET_APPVER_ONETIME == 0)
+    {
+       	get_appver();
+    }
+//==================================END of Get APPVER Command====================================
+//==================================Get VARNAME Command===========================================
+     if(strncmp(MEI_CURRENT_COMMAND,"varname",6)== 0 && GET_VARNAME_ONETIME == 0)
+     {
+       	get_varname();
+     }
+//==================================END of Get APPVER Command====================================
 
 
-	return;
+
+
+
+
+
+
+
+    return;
 }

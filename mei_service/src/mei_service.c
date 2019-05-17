@@ -11,7 +11,6 @@
 
 
 char comm_port[250] = {0};
-//char MEI_CURRENT_COMMAND[30] = "idle";
 char tx_packet[30] = {0};
 
 int main(int argc, char *argv[])

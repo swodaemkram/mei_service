@@ -5,7 +5,7 @@
  *      Author: mark
  */
 
-extern char rx_packet[30];
+extern char rx_packet[40];
 extern char MEI_STATUS[30];
 char LAST_MEI_STATUS[30];
 
