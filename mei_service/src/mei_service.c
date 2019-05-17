@@ -158,7 +158,6 @@ if(strncmp(MEI_CURRENT_COMMAND,"stop",4)==0)
 usleep(300000);
 
 }//End of our while loop
-printf("\n");
 //close(fd);
 return(0);
 }

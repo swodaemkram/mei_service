@@ -101,7 +101,7 @@ Finished Setting up Comm Port
 			    	while(i < rdlen)
 			    	{
 			    		rx_packet[i] = buf[i];
-			    		printf("%02x|",rx_packet[i]);//Print The RXed Hex Packet
+			    		//printf("%02x|",rx_packet[i]);//Print The RXed Hex Packet DEBUG !!!
 			    		i++;
 			       	}
 			    	printf("\033[0m");  //Set Color back to white
@@ -141,7 +141,7 @@ while (i < rx_packet_len)
 		bzero(rx_packet,40);
 		//rx_packet[0] = '\x00';
 		//rx_packet_len = 1;
-		printf("BAD CRC RXed\n");
+		//printf("BAD CRC RXed\n"); //DEBUG !!!
 		log_Function("BAD CRC RXed !");
 		return;
 	}
