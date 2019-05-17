@@ -138,8 +138,9 @@ while (i < rx_packet_len)
 	//printf("Calculated CRC = %02x\n",calculated_crc);
 	if (calculated_crc != rx_packet[rx_packet_len-1])
 	{
-		rx_packet[0] = '\x00';
-		rx_packet_len = 1;
+		bzero(rx_packet,30);
+		//rx_packet[0] = '\x00';
+		//rx_packet_len = 1;
 		printf("BAD CRC RXed\n");
 		log_Function("BAD CRC RXed !");
 		return;

@@ -8,6 +8,7 @@ extern char MEI_CURRENT_COMMAND[30];
 extern char tx_packet[30];
 extern char MEI_STATUS[30];
 char MEI_LAST_COMMAND[30] = {0};
+int GET_INFO_ONETIME = 0;
 
 void process_commands(void)
 {
@@ -102,8 +103,10 @@ void process_commands(void)
           }
 //==================================End of Verify  Command=======================================
 //===============================Detailed Information Command====================================
-    if(strncmp(MEI_CURRENT_COMMAND,"info",4)== 0)
+    if(strncmp(MEI_CURRENT_COMMAND,"info",4)== 0 && GET_INFO_ONETIME == 0)
     	{
+
+
     	detailed_info_command();
     	}
 

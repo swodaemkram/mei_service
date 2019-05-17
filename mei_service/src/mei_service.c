@@ -55,8 +55,6 @@ Make Sure We Only Run Once
 		sprintf(strpid,"%d",pid);
 		fwrite(strpid,1,sizeof(strpid),pid_lock);
 		fclose(pid_lock);										// Close pid lock file
-
-		log_Function("mei_service has started");
 /*
 ======================================================================================================================
 end of run once check
@@ -72,10 +70,10 @@ Start Domain Socket For Commands
 End of Setting up a Domain Socket
 ======================================================================================================================
  */
-
+log_Function("========================================");
 log_Function("MEI Service Started using");
 log_Function(comm_port);
-
+log_Function("========================================");
 signal(SIGTERM,SignalHandler);
 
 while(1){
@@ -125,6 +123,7 @@ if (rx_packet[2] == '\x21')
 	tx_packet[6] = '\x03';
 	tx_packet[7] = tx_crc;
 }
+
 //============================End of Polling================
 //====================Business  Logic for MEI===============
 get_command_from_file();      //Get Command from File
@@ -151,8 +150,10 @@ process_response();
 //======================Process Stop Command================
 if(strncmp(MEI_CURRENT_COMMAND,"stop",4)==0)
 {
- 	log_Function("Stop Command Received Shutting Down Service ....");
- 	SignalHandler(1);
+ 	log_Function("================================================");
+	log_Function("Stop Command Received Shutting Down Service ....");
+ 	log_Function("================================================");
+	SignalHandler(1);
 }
 //==========================End of Stop Command=============
 usleep(300000);
