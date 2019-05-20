@@ -10,5 +10,6 @@ void SignalHandler(int signum)
 {
 			remove("/run/mei_service.pid");
 			log_Function("teminate signal received shutting mei service down");
+
 			exit(0);
 }

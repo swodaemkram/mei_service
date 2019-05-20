@@ -12,37 +12,58 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <unistd.h>
+#include <fcntl.h>
+#define NAME "mei_service.sock"
+int RUNONCE = 0;
 
-/* Read text from the socket and print it out. Continue until the
-   message, zero otherwise.  */
-
-void server (int client_socket)
+void domain_socket_server (void)
 {
 
-	 int length;
-     char* text;
 
-     /* First, read the length of the text message from the socket. If
-        read returns zero, the client closed the connection.  */
+	int sock, msgsock, rval;
+	struct sockaddr_un server;
+	char buf[1024];
 
-     if (read (client_socket, &length, sizeof (length)) == 0)
+	if(RUNONCE == 0)
+	{
+	sock = socket(AF_UNIX, SOCK_STREAM, 0);
+	//fcntl(socket_fd, F_SETFL, O_NONBLOCK); // Set Socket for NON-Blocking
 
-     /* Allocate a buffer to hold the text.  */
+	server.sun_family = AF_UNIX;
+	strcpy(server.sun_path, NAME);
+	if (bind(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_un))) {
+		perror("binding stream socket");
+		exit(1);
+	 }
 
-     text = (char*) malloc (length);
+	printf("Socket Created name %s\n", server.sun_path);
+	listen(sock, 5);
 
-     /* Read the text itself, and print it.  */
 
-     read (client_socket, text, length);
-     printf ("%s\n", text);
+		msgsock = accept(sock, 0, 0);
+		RUNONCE = 1;
+	}
 
-     /* Free the buffer.  */
+	fcntl(sock, F_SETFL, O_NONBLOCK); // Set Socket for NON-Blocking
+		//if (msgsock == -1)
+		//	perror("accept");
+		//else do {
+			bzero(buf, sizeof(buf));
+			rval = read(msgsock, buf, 1024);
+			//if ((rval = read(msgsock, buf, 1024)) < 0)
+				//perror("reading stream message");
+			//else if (rval == 0)
 
-     free (text);
+				//printf("Ending connection\n");
+			//else
+				printf("-->%s\n", buf);
+		//} while (rval > 0);
+		//close(msgsock);
 
-     return;
+	//close(sock);
+	//unlink(NAME);
 
-   }
+}
 
 
 
