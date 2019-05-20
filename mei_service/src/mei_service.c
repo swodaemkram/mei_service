@@ -23,7 +23,7 @@ Lets process the service startup commands
 */
 	if (argv[1] == NULL){
 			printf("Comm port must be supplied !\n\n");
-			exit(1);
+			SignalHandler(1);
 	}
 
 		strncpy(comm_port,argv[1],strlen(argv[1]));
@@ -40,13 +40,13 @@ Make Sure We Only Run Once
 		if (pid_lock != NULL){
 			fclose(pid_lock);
 			printf("\n mei_service is all ready running\n");
-			exit(1);
+			SignalHandler(1);
 		}
 
 		pid_lock = fopen("/run/mei_service.pid", "w+");  	// Open the pid file for writing
 		if (pid_lock == NULL){
 		printf("\ncould not open lock file.\n");
-		exit(1);
+		SignalHandler(1);
 		}
 		char strpid[6] = {0} ;
 		int pid;

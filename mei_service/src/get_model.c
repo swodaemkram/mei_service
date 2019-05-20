@@ -31,7 +31,7 @@ void get_model(void)
 		}
 
 		char log_message[100] = {0};
-		sprintf(log_message,"MEI Response Model <= %s",the_clean_text);
+		sprintf(log_message,"MEI Response Model = %s",the_clean_text);
 		log_Function(log_message);//For now we will print the model number in the Log file but could put it any place
 		tx_packet[2] = '\x10';    //Put tx_packet back in command mode
 		GET_MODEL_ONETIME = 1;    //Keeps this from spinning out of control
