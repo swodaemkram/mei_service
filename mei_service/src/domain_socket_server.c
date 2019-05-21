@@ -13,55 +13,54 @@
 #include <sys/un.h>
 #include <unistd.h>
 #include <fcntl.h>
-#define NAME "mei_service.sock"
-int RUNONCE = 0;
+#include <sys/epoll.h>
+#include <errno.h>
+#include <netinet/in.h>
+
 
 void domain_socket_server (void)
 {
 
-
 	int sock, msgsock, rval;
-	struct sockaddr_un server;
-	char buf[1024];
+	struct sockaddr_un server; //Set up structure for socket
+	char buf[1024];				//Buffer
 
-	if(RUNONCE == 0)
+	sock = socket(AF_UNIX, SOCK_STREAM, 0); //setup socket
+	fcntl(sock, F_SETFL, O_NONBLOCK); // Set Socket for NON-Blocking
+	server.sun_family = AF_UNIX;           //Protocol
+	strcpy(server.sun_path, "mei_service.sock");		//build socket path
+	bind(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_un)); //Bind Socket
+
+    listen(sock, 1); //Listen to socket
+    usleep(100000);  //This delay is critical for the operation of the network client
+	msgsock = accept(sock, 0, 0); //Accept connection from anyone
+
+	if (msgsock == -1)
 	{
-	sock = socket(AF_UNIX, SOCK_STREAM, 0);
-	//fcntl(socket_fd, F_SETFL, O_NONBLOCK); // Set Socket for NON-Blocking
-
-	server.sun_family = AF_UNIX;
-	strcpy(server.sun_path, NAME);
-	if (bind(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_un))) {
-		perror("binding stream socket");
-		exit(1);
-	 }
-
-	printf("Socket Created name %s\n", server.sun_path);
-	listen(sock, 5);
-
-
-		msgsock = accept(sock, 0, 0);
-		RUNONCE = 1;
+		//perror("socket"); //DEBUG should say Resource Temporarily Unavailable
+		close(msgsock);
+		close(sock);
+		unlink("mei_service.sock");
+		//printf("BAIL\n");
+		return;
 	}
 
-	fcntl(sock, F_SETFL, O_NONBLOCK); // Set Socket for NON-Blocking
-		//if (msgsock == -1)
-		//	perror("accept");
-		//else do {
-			bzero(buf, sizeof(buf));
-			rval = read(msgsock, buf, 1024);
-			//if ((rval = read(msgsock, buf, 1024)) < 0)
-				//perror("reading stream message");
-			//else if (rval == 0)
 
-				//printf("Ending connection\n");
-			//else
-				printf("-->%s\n", buf);
-		//} while (rval > 0);
-		//close(msgsock);
+	//printf("msgsock = %d\n",msgsock);//debug
+    bzero(buf, sizeof(buf));      //Zero out buffer
+    rval = read(msgsock, buf, 1024); //Read from the socket
+    //rval = recv(msgsock,buf,1024,0);   // Recv from socket same ad ^
 
-	//close(sock);
-	//unlink(NAME);
+    if(rval > 0 )
+	{
+	printf("--> %s\n ", buf); //Print Results
+	close(msgsock);
+    close(sock);
+    unlink("mei_service.sock");
+	return;
+	}
+
+    return;
 
 }
 
