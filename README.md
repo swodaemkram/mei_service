@@ -9,13 +9,19 @@ For example a command line connector or a domain socket connector or a REST tcp/
  This should give us unprecedented flexibility.
  
  The service will provide the following
- 
+ ------------------------------------------------------------------------------------------------
  COMMANDS:
  reset,
  verify,
  stack,
- info,
- cancel,
+ idle,
+ appver,
+ bootver,
+ model,
+ serial,
+ varname,
+ 
+ -------------------------------------------------------------------------------------------------
  status|-----REPLYS
                 |_busy
                 |_stacking
