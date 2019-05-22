@@ -38,6 +38,12 @@ For example a command line connector or a domain socket connector or a REST tcp/
                 |_jamed
                 |_full
                 |_rejected
+------------------------------------------------------------------------------------------------------
+Test command for connection and issuing commands until a client is writen
+sudo socat -UNIX-CONNECT:./mei_service.sock
+------------------------------------------------------------------------------------------------------
+
+                
                 |_cheated
                 |_returned
                 
