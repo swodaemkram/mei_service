@@ -11,15 +11,15 @@ For example a command line connector or a domain socket connector or a REST tcp/
  The service will provide the following
  ------------------------------------------------------------------------------------------------
  COMMANDS:
- reset,
- verify,
- stack,
- idle,
- appver,
- bootver,
- model,
- serial,
- varname,
+ reset
+ verify
+ stack
+ idle
+ appver
+ bootver
+ model
+ serial
+ varname
  
  -------------------------------------------------------------------------------------------------
  status|-----REPLYS
@@ -38,14 +38,13 @@ For example a command line connector or a domain socket connector or a REST tcp/
                 |_jamed
                 |_full
                 |_rejected
-------------------------------------------------------------------------------------------------------
+                |_cheated
+                |_returned
+
+-----------------------------------------------------------------------------------------------------
 Test command for connection and issuing commands until a client is writen
 sudo socat -UNIX-CONNECT:./mei_service.sock
 ------------------------------------------------------------------------------------------------------
-
-                
-                |_cheated
-                |_returned
                 
   this service will be writen in ansi c to allow easy cross platform compilation. As an example ARM Linux.
   I will write a connector imediatly for VSafe. I will also write a command ine and a HTTP (REST) connector and any
