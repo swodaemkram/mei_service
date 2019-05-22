@@ -152,7 +152,7 @@ Get RXed Status of MEI
 
 if (rx_packet_len <= 1)
 {
-	strcpy(MEI_STATUS,"check connection...");
+	strcpy(MEI_STATUS,"checking connection...");
 	log_Function(MEI_STATUS);
 	return;
 }
