@@ -67,10 +67,7 @@ Setup Comm Port
 			    int fd;
 			    //int wlen;
 
-
-
 			    	fd = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
-
 
 			    if (fd < 0) {
 			        printf("Error opening %s: %s\n", portname, strerror(errno));
@@ -107,7 +104,6 @@ Finished Setting up Comm Port
 			    	printf("\033[0m");  //Set Color back to white
 
 			    }
-
 
 			    rx_packet_len = rdlen;
 
@@ -156,7 +152,7 @@ Get RXed Status of MEI
 
 if (rx_packet_len <= 1)
 {
-	strcpy(MEI_STATUS,"dissconnected");
+	strcpy(MEI_STATUS,"MEI Device not Responding Please check Connection .....");
 	log_Function(MEI_STATUS);
 	return;
 }

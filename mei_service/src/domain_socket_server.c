@@ -16,7 +16,7 @@
 #include <sys/epoll.h>
 #include <errno.h>
 #include <netinet/in.h>
-
+extern char MEI_CURRENT_COMMAND[30] ;
 
 void domain_socket_server (void)
 {
@@ -28,7 +28,7 @@ void domain_socket_server (void)
 	sock = socket(AF_UNIX, SOCK_STREAM, 0); //setup socket
 	fcntl(sock, F_SETFL, O_NONBLOCK); // Set Socket for NON-Blocking
 	server.sun_family = AF_UNIX;           //Protocol
-	strcpy(server.sun_path, "mei_service.sock");		//build socket path
+	strcpy(server.sun_path, "mei_command.sock");		//build socket path
 	bind(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_un)); //Bind Socket
 
     listen(sock, 1); //Listen to socket
@@ -40,11 +40,10 @@ void domain_socket_server (void)
 		//perror("socket"); //DEBUG should say Resource Temporarily Unavailable
 		close(msgsock);
 		close(sock);
-		unlink("mei_service.sock");
+		unlink("mei_command.sock");
 		//printf("BAIL\n");
 		return;
 	}
-
 
 	//printf("msgsock = %d\n",msgsock);//debug
     bzero(buf, sizeof(buf));      //Zero out buffer
@@ -53,10 +52,11 @@ void domain_socket_server (void)
 
     if(rval > 0 )
 	{
-	printf("--> %s\n ", buf); //Print Results
+	//printf("--> %s\n ", buf); //Print Results DEBUG
+	strcpy(MEI_CURRENT_COMMAND,buf);
 	close(msgsock);
     close(sock);
-    unlink("mei_service.sock");
+    unlink("mei_command.sock");
 	return;
 	}
 

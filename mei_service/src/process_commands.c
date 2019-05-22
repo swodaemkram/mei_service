@@ -156,13 +156,5 @@ void process_commands(void)
      }
 //==================================END of Get APPVER Command====================================
 
-
-
-
-
-
-
-
-
     return;
 }

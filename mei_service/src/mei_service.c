@@ -129,15 +129,11 @@ if (rx_packet[2] == '\x21')
 //============================End of Polling================
 //====================Business  Logic for MEI===============
 get_command_from_file();      //Get Command from File
-
 domain_socket_server();
-
 process_commands();
 mei_tx(tx_packet, comm_port); //Transmit Packet to MEI
 mei_rx(comm_port);            // Receive packet from MEI
 process_response();
-
-
 //===========END OF Business Logic===========================
 //===========DEBUG CODE to print rx_packet===================
 //int i = 0;

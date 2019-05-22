@@ -16,7 +16,7 @@ char * clean_text(char *text, int len_text)
 
 	while (i<len_text)
 	{
-		if (text[i] >= 48 && text[i]<=121)
+		if (text[i] >= 48 && text[i] <= 121 && text[i] != 60 && text[i] != 96)
 		{
 			clean_text[a]=text[i];
 			a++;

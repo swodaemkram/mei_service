@@ -38,6 +38,5 @@ void get_appver(void)
 		GET_APPVER_ONETIME = 1;    //Keeps this from spinning out of control
 		tx_packet[2] = '\x10';    //Put tx_packet back in command mode
 
-
 	return;
 }
