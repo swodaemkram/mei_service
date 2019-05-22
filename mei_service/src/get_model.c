@@ -9,6 +9,7 @@ extern char rx_packet[40];
 extern char comm_port[250];
 extern int GET_MODEL_ONETIME;
 extern char the_clean_text[30];
+extern char MEI_STATUS[30];
 
 void get_model(void)
 
@@ -32,6 +33,8 @@ void get_model(void)
 
 		char log_message[100] = {0};
 		sprintf(log_message,"MEI Response Model = %s",the_clean_text);
+		strcpy(MEI_STATUS,the_clean_text);
+		domain_response_server();
 		log_Function(log_message);//For now we will print the model number in the Log file but could put it any place
 		tx_packet[2] = '\x10';    //Put tx_packet back in command mode
 		GET_MODEL_ONETIME = 1;    //Keeps this from spinning out of control

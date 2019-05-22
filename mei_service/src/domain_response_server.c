@@ -53,5 +53,4 @@ void domain_response_server(void)
 	}
 	return;
 
-
 }
