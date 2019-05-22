@@ -134,6 +134,7 @@ process_commands();
 mei_tx(tx_packet, comm_port); //Transmit Packet to MEI
 mei_rx(comm_port);            // Receive packet from MEI
 process_response();
+domain_response_server();
 //===========END OF Business Logic===========================
 //===========DEBUG CODE to print rx_packet===================
 //int i = 0;

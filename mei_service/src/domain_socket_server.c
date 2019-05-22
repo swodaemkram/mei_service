@@ -48,7 +48,7 @@ void domain_socket_server (void)
 	//printf("msgsock = %d\n",msgsock);//debug
     bzero(buf, sizeof(buf));      //Zero out buffer
     rval = read(msgsock, buf, 1024); //Read from the socket
-    //rval = recv(msgsock,buf,1024,0);   // Recv from socket same ad ^
+    //rval = recv(msgsock,buf,1024,0);   // Recv from socket same as ^
 
     if(rval > 0 )
 	{

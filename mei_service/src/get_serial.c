@@ -11,6 +11,7 @@ extern char comm_port[250];
 extern int GET_SERIAL_ONETIME;
 extern char the_clean_text[30];
 
+extern char MEI_STATUS[30]; //GLOBAL STATUS OF THE MEI
 
 void get_serial(void)
 
@@ -34,6 +35,8 @@ void get_serial(void)
 		}
 		char log_message[100];
 		sprintf(log_message,"MEI Response for Serial Number = %s",the_clean_text);
+		strcpy(MEI_STATUS,the_clean_text);
+		domain_response_server();
 		log_Function(log_message);//For now we will print the Serial number in the Log file but could put it any place
 		GET_SERIAL_ONETIME = 1;
 		tx_packet[2] = '\x10';   //Put tx_packet back in command mode
