@@ -98,7 +98,7 @@ Finished Setting up Comm Port
 			    	while(i < rdlen)
 			    	{
 			    		rx_packet[i] = buf[i];
-			    		//printf("%02x|",rx_packet[i]);//Print The RXed Hex Packet DEBUG !!!
+			    		printf("%02x|",rx_packet[i]);//Print The RXed Hex Packet DEBUG !!!
 			    		i++;
 			       	}
 			    	printf("\033[0m");  //Set Color back to white
