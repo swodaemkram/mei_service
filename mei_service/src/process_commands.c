@@ -26,6 +26,7 @@ void process_commands(void)
 	{
 		tx_packet[3] = '\x1f';
 		tx_packet[4] = '\x14';
+		tx_packet[5] = '\x10';//DEBUG FOR NEW ENHANCED BILL REPORTING
 		tx_packet[6] = '\x00';
 		tx_packet[7] = '\x00';
 		tx_crc = 0;

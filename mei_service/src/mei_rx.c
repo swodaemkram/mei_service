@@ -16,7 +16,7 @@ char rx_packet[40] = {0};
 int  rx_packet_len = 0;
 char MEI_STATUS[30] = "idling";
 int is_comm_port_open = 0;
-
+extern char the_clean_text[30];
 void mei_rx(char *comm_port)
 
 {
@@ -98,14 +98,23 @@ Finished Setting up Comm Port
 			    	while(i < rdlen)
 			    	{
 			    		rx_packet[i] = buf[i];
-			    		printf("%02x|",rx_packet[i]);//Print The RXed Hex Packet DEBUG !!!
+			    		//printf("%02x|",rx_packet[i]);//Print The RXed Hex Packet DEBUG !!!
 			    		i++;
-			       	}
-			    	printf("\n");
+			    	}
+			    	//printf("\n");
 			    	printf("\033[0m");  //Set Color back to white
-
+//====================================================== Enhanced Logging ==========================================================================
+char rxhex[120] = {0};
+sprintf(rxhex,"%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x|%02x"
+,rx_packet[0],rx_packet[1],rx_packet[2],rx_packet[3],rx_packet[4],rx_packet[5],rx_packet[6],rx_packet[7],rx_packet[8],rx_packet[9],rx_packet[10]
+,rx_packet[11],rx_packet[12],rx_packet[13],rx_packet[14],rx_packet[15],rx_packet[16],rx_packet[17],rx_packet[18],rx_packet[19],rx_packet[20],
+rx_packet[21],rx_packet[22],rx_packet[23],rx_packet[24],rx_packet[25],rx_packet[26],rx_packet[27],rx_packet[28],rx_packet[29]);
+log_Function(rxhex); //DEBUG ENHANCED HEX LOGGING OF RXed Data From MEI
+clean_text(rx_packet,rdlen);
+log_Function(the_clean_text);
+//==================================================================================================================================================
 			    }
-
+			    //printf("%d\n",rdlen);//DEBUG
 			    rx_packet_len = rdlen;
 
 			    if (rx_packet_len < 1)

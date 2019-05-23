@@ -72,9 +72,7 @@ log_Function("================================================");
 char log_message[30];
 sprintf(log_message,"MEI Service Starting using %s",comm_port);
 log_Function(log_message);
-log_Function("Ver 01.00.00");
-//log_Function("MEI Service Started using");
-//log_Function(comm_port);
+log_Function("Ver 01.00.10");
 log_Function("================================================");
 signal(SIGTERM,SignalHandler);
 
@@ -104,7 +102,7 @@ if (strcmp(rx_packet,"") == 0)//if the last RXed Packet is Blank Start a new pol
 
 //==================Start of Polling========================
 
-if (rx_packet[2] == '\x20')
+if (rx_packet[2] == '\x20') //Standard Polling
 {
 	tx_packet[2] = '\x11';
     tx_packet[6] = '\x00';
@@ -115,7 +113,29 @@ if (rx_packet[2] == '\x20')
     tx_packet[7] = tx_crc;
 }
 
-if (rx_packet[2] == '\x21')
+if (rx_packet[2] == '\x21') //Standard Polling
+{
+	tx_packet[2] = '\x10';
+	tx_packet[6] = '\x00';
+	tx_packet[7] = '\x00';
+	tx_crc = 0;
+	tx_crc = do_crc(tx_packet,8);
+	tx_packet[6] = '\x03';
+	tx_packet[7] = tx_crc;
+}
+
+if (rx_packet[2] == '\x70') //Enhanced Information Polling
+{
+	tx_packet[2] = '\x11';
+    tx_packet[6] = '\x00';
+    tx_packet[7] = '\x00';
+    tx_crc = 0;
+    tx_crc = do_crc(tx_packet,8);
+    tx_packet[6] = '\x03';
+    tx_packet[7] = tx_crc;
+}
+
+if (rx_packet[2] == '\x71') //Enhanced Information Polling
 {
 	tx_packet[2] = '\x10';
 	tx_packet[6] = '\x00';
