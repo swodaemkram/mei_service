@@ -86,7 +86,8 @@ void get_command_from_file(void);//Read a command from a file
 void process_commands(void); //Process Incoming commands
 void process_response(void); //Process Response from MEI
 char * clean_text(char *text, int len_text); //return printable Characters only
-
+void domain_socket_server(void);
+void domain_response_server(void);
 //--------------------------------End of Available Functions---------------------
 
 //--------------------------------Global Variables-------------------------------

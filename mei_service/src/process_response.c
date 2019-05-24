@@ -8,6 +8,7 @@
 extern char rx_packet[40];
 extern char MEI_STATUS[30];
 char LAST_MEI_STATUS[30];
+extern char MEI_CURRENT_COMMAND[30];
 
 void process_response (void)
 {
@@ -41,6 +42,17 @@ void process_response (void)
 		  break;
 
 	}
+
+	switch(rx_packet[2]) //Detect enhanced escrow
+	{
+	case '\x70':
+		strcpy(MEI_STATUS,"escrowed");
+		break;
+	case '\x71':
+		strcpy(MEI_STATUS,"escrowed");
+		break;
+	}
+
 //===========================Detect Cassette Removal=========================================
     if (strncmp(MEI_STATUS,"stacked",7)==0 && rx_packet[5] == '\x00')
     {
@@ -48,7 +60,7 @@ void process_response (void)
     }
 //======================End of Cassette Removal Detection====================================
 //============================Determine Dnom Stacked=========================================
-    if (strncmp(MEI_STATUS,"stacked",7)==0 && rx_packet[5] != '\x00')
+/*    if (strncmp(MEI_STATUS,"stacked",7)==0 && rx_packet[5] != '\x00')//OLD IF Statement
     {
     	switch (rx_packet[5])
     	{
@@ -62,9 +74,27 @@ void process_response (void)
     	}
 
     }
+*/
+if (strncmp(MEI_STATUS,"escrowed",8)==0 && strncmp(MEI_CURRENT_COMMAND, "stack",5) == 0)
+{
+	char denom_detail[8] = {0};
+	char temp_message[30] = {0};
+
+	int v = 0;
+	while(v <= 8)
+	{
+	  denom_detail[v] = rx_packet[v+11];
+	 v++;
+	}
+
+//sprintf(temp_message,"stacked a %s",denom_detail);
+strncpy(MEI_STATUS,denom_detail,8);
+}
+
 //=============================END of Dnom Determination====================================
 //====================================Dnom Returned==========================================
     //log_Function(MEI_STATUS);
+
     if (strncmp(MEI_STATUS,"returned",8)==0 )
     {
     	switch (rx_packet[5])
@@ -79,11 +109,12 @@ void process_response (void)
     	    	}
 
     }
+
 //=================================End of Dnom Returned=====================================
 //==========================LOG ONLY CHANGES IN STATUS=======================================
 if (strcmp(MEI_STATUS,LAST_MEI_STATUS)!=0)
 {
-	char log_message[30] = {0};
+	char log_message[45] = {0};
 	sprintf(log_message,"MEI Response = %s",MEI_STATUS);
 	log_Function(log_message);
 	domain_response_server();

@@ -15,7 +15,6 @@ char tx_packet[30] = {0};
 
 int main(int argc, char *argv[])
 {
-
 /*
 ==================================================================================================================
 Lets process the service startup commands
@@ -58,16 +57,8 @@ Make Sure We Only Run Once
 ======================================================================================================================
 end of run once check
 ======================================================================================================================
-Start Domain Socket For Commands
-======================================================================================================================
 */
 
-
-/*
-======================================================================================================================
-End of Setting up a Domain Socket
-======================================================================================================================
- */
 log_Function("================================================");
 char log_message[30];
 sprintf(log_message,"MEI Service Starting using %s",comm_port);
@@ -149,12 +140,12 @@ if (rx_packet[2] == '\x71') //Enhanced Information Polling
 //==================End of Polling=============================
 //===============Business  Logic for MEI=======================
 get_command_from_file();      //Get Command from File
-domain_socket_server();
-process_commands();
+domain_socket_server();       //Get Command from domain socket
+process_commands();           //Process In coming commands
 mei_tx(tx_packet, comm_port); //Transmit Packet to MEI
 mei_rx(comm_port);            // Receive packet from MEI
-process_response();
-domain_response_server();
+process_response();           // What does the Response from the MEI mean
+domain_response_server();     // Send Translated response from MEI to domain socket
 //===============END OF Business Logic===========================
 //===============Process Stop Command============================
 if(strncmp(MEI_CURRENT_COMMAND,"stop",4)==0)
