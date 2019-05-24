@@ -111,7 +111,7 @@ if((strncmp(MEI_CURRENT_COMMAND,"stack",5)==0 && rx_packet[11]=='\x55') ||(strnc
         	 tx_packet[6] = '\x03';
         	 tx_packet[7] = tx_crc;
          }
-/*
+
          if(strncmp(MEI_CURRENT_COMMAND,"verify",6) == 0 && strncmp(MEI_STATUS,"escrowed") == 0)
 
          {
@@ -127,7 +127,6 @@ if((strncmp(MEI_CURRENT_COMMAND,"stack",5)==0 && rx_packet[11]=='\x55') ||(strnc
         	 tx_packet[7] = tx_crc;
 
          }
-*/
 
  if((strncmp(MEI_CURRENT_COMMAND,"verify",6)== 0 && rx_packet[11]=='\x55') ||(strncmp(MEI_CURRENT_COMMAND,"verify",6)== 0 && rx_packet[11]=='\x45' )||(strncmp(MEI_CURRENT_COMMAND,"verify",6)== 0 && rx_packet[11]=='\x49')) //Detects the U in USD, THE E in ERO and the I in ILS
 

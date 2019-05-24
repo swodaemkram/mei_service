@@ -9,6 +9,7 @@ extern char rx_packet[40];
 extern char MEI_STATUS[30];
 char LAST_MEI_STATUS[30];
 extern char MEI_CURRENT_COMMAND[30];
+extern the_clean_text[30];
 
 void process_response (void)
 {
@@ -52,7 +53,6 @@ void process_response (void)
 		strcpy(MEI_STATUS,"escrowed");
 		break;
 	}
-
 //===========================Detect Cassette Removal=========================================
     if (strncmp(MEI_STATUS,"stacked",7)==0 && rx_packet[5] == '\x00')
     {
@@ -70,14 +70,12 @@ void process_response (void)
     	case '\x28':
     		strcpy(MEI_STATUS,"stacked_dnom_4"); //USD $20.00
     		break;
-
     	}
-
     }
 */
 if (strncmp(MEI_STATUS,"escrowed",8)==0 && strncmp(MEI_CURRENT_COMMAND, "stack",5) == 0)
 {
-	char denom_detail[8] = {0};
+	char denom_detail[9] = {0};
 	char temp_message[30] = {0};
 
 	int v = 0;
@@ -87,14 +85,14 @@ if (strncmp(MEI_STATUS,"escrowed",8)==0 && strncmp(MEI_CURRENT_COMMAND, "stack",
 	 v++;
 	}
 
-//sprintf(temp_message,"stacked a %s",denom_detail);
-strncpy(MEI_STATUS,denom_detail,8);
+clean_text(denom_detail,9);
+sprintf(MEI_STATUS,"stacked a %s",the_clean_text);
+//strncpy(MEI_STATUS,the_clean_text,8);
 }
-
 //=============================END of Dnom Determination====================================
 //====================================Dnom Returned==========================================
     //log_Function(MEI_STATUS);
-
+/*
     if (strncmp(MEI_STATUS,"returned",8)==0 )
     {
     	switch (rx_packet[5])
@@ -105,11 +103,25 @@ strncpy(MEI_STATUS,denom_detail,8);
     	    	case '\x28':
     	    		strcpy(MEI_STATUS,"verified_dnom_4"); //USD $20.00
     	    		break;
-
     	    	}
-
     }
+*/
+if (strncmp(MEI_STATUS,"escrowed",8)==0 && strncmp(MEI_CURRENT_COMMAND, "verify",5) == 0)
+{
+	char denom_detail[9] = {0};
+	char temp_message[30] = {0};
 
+	int v = 0;
+	while(v <= 8)
+	{
+	  denom_detail[v] = rx_packet[v+11];
+	 v++;
+	}
+
+clean_text(denom_detail,9);
+sprintf(MEI_STATUS,"Verified a %s",the_clean_text);
+//strncpy(MEI_STATUS,the_clean_text,8);
+}
 //=================================End of Dnom Returned=====================================
 //==========================LOG ONLY CHANGES IN STATUS=======================================
 if (strcmp(MEI_STATUS,LAST_MEI_STATUS)!=0)

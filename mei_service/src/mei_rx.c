@@ -18,7 +18,6 @@ char MEI_STATUS[30] = "idling";
 int is_comm_port_open = 0;
 extern char the_clean_text[30];
 extern int DEBUG_LOG ;
-
 void mei_rx(char *comm_port)
 {
 //printf("MEI_RX CALLED\n");//DEBUG
