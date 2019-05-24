@@ -50,7 +50,7 @@ sudo socat -UNIX-CONNECT:./mei_service.sock
   I will write a connector imediatly for VSafe. I will also write a command ine and a HTTP (REST) connector and any
   others as deemed necessary.
   
-  a new program calle meicli is a new command line "connector" for the mei_service it connects to the Domain Socket 
+  a new program called meicli is a new command line "connector" for the mei_service it connects to the Domain Socket 
   monitored by mei_service and allows a user to issue a command that is sent to the mei_servers API and allows control 
   of the service from the command line. (finished on 10/24/2019).
   
