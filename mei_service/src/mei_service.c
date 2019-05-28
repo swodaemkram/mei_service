@@ -9,9 +9,9 @@
  */
 # include "mei_service.h"
 
-
 char comm_port[250] = {0};
 char tx_packet[30] = {0};
+char pid_loc_file_name[250];
 
 int main(int argc, char *argv[])
 {
@@ -26,6 +26,17 @@ Lets process the service startup commands
 	}
 
 		strncpy(comm_port,argv[1],strlen(argv[1]));
+
+	if (argv[2] == NULL){
+		printf("Must have Instance Number ! \n\n");
+		SignalHandler(1);
+	}
+
+int procnumber = argv[2];
+
+
+sprintf(pid_loc_file_name,"/run/men_service%d.pid",procnumber);
+
 /*
 ===================================================================================================================
 Finished processing the service startup commands
@@ -35,14 +46,17 @@ Make Sure We Only Run Once
 */
 	FILE *pid_lock = NULL;                            	// declare pid lock file
 
-		pid_lock = fopen("/run/mei_service.pid", "r");
+		//pid_lock = fopen("/run/mei_service.pid", "r");
+		pid_lock = fopen(pid_loc_file_name,"r");
 		if (pid_lock != NULL){
 			fclose(pid_lock);
 			printf("\n mei_service is all ready running\n");
 			SignalHandler(1);
 		}
 
-		pid_lock = fopen("/run/mei_service.pid", "w+");  	// Open the pid file for writing
+		//pid_lock = fopen("/run/mei_service.pid", "w+");  	// Open the pid file for writing
+
+		pid_lock = fopen(pid_loc_file_name,"w+");
 		if (pid_lock == NULL){
 		printf("\ncould not open lock file.\n");
 		SignalHandler(1);
