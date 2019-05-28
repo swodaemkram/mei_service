@@ -17,19 +17,25 @@
 #include <errno.h>
 #include <netinet/in.h>
 
+extern int procnumber;
 extern char MEI_STATUS[30]; //GLOBAL STATUS OF THE MEI
 extern char LAST_MEI_STATUS[30];
 int txsock = 0;
+
 void domain_response_server(void)
 {
 
 	if(txsock <= 0){
-	    int sock;
+
+		int sock;
 		struct sockaddr_un server; //Set up structure for socket
 		sock = socket(AF_UNIX, SOCK_STREAM, 0); //setup socket
 		fcntl(sock, F_SETFL, O_NONBLOCK); // Set Socket for NON-Blocking
 		server.sun_family = AF_UNIX;           //Protocol
-		strcpy(server.sun_path, "mei_response.sock");		//build socket path
+		char mei_response_sock_name[250] = {0};
+		sprintf(mei_response_sock_name,"mei_response%d.sock",procnumber);
+		//strcpy(server.sun_path, "mei_response.sock");		//build socket path
+		strcpy(server.sun_path,mei_response_sock_name);
 		bind(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_un)); //Bind Socket
 
 	    listen(sock, 1); //Listen to socket

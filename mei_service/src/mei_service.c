@@ -12,6 +12,7 @@
 char comm_port[250] = {0};
 char tx_packet[30] = {0};
 char pid_loc_file_name[250];
+int procnumber;
 
 int main(int argc, char *argv[])
 {
@@ -32,11 +33,11 @@ Lets process the service startup commands
 		SignalHandler(1);
 	}
 
-int procnumber = argv[2];
 
+procnumber = atoi(argv[2]);
 
-sprintf(pid_loc_file_name,"/run/men_service%d.pid",procnumber);
-
+sprintf(pid_loc_file_name,"/run/mei_service%d.pid",procnumber);
+printf("pid-file = %s\n",pid_loc_file_name);
 /*
 ===================================================================================================================
 Finished processing the service startup commands
@@ -50,7 +51,7 @@ Make Sure We Only Run Once
 		pid_lock = fopen(pid_loc_file_name,"r");
 		if (pid_lock != NULL){
 			fclose(pid_lock);
-			printf("\n mei_service is all ready running\n");
+			printf("\n mei_service is all ready running on this process id\n");
 			SignalHandler(1);
 		}
 
@@ -150,7 +151,6 @@ if (rx_packet[2] == '\x71') //Enhanced Information Polling
 	tx_packet[6] = '\x03';
 	tx_packet[7] = tx_crc;
 }
-
 //==================End of Polling=============================
 //===============Business  Logic for MEI=======================
 get_command_from_file();      //Get Command from File

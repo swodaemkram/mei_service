@@ -11,6 +11,8 @@
 #include <stdio.h>
 #include <string.h>
 
+extern int procnumber;
+
 void log_Function(char *log_message)
 
 {
@@ -21,8 +23,12 @@ void log_Function(char *log_message)
 	    strftime(buff, sizeof buff, "%D %T", gmtime(&ts.tv_sec));
 
 		FILE *mei_service_log = NULL; //declare File Pointer
-		mei_service_log = fopen("/var/log/mei_service.log", "a");
+		char mei_log_file_name[250] = {0};
+		sprintf(mei_log_file_name,"/var/log/mei_service_proc%d.log",procnumber);
 
+		//mei_service_log = fopen("/var/log/mei_service.log", "a");
+
+		mei_service_log = fopen(mei_log_file_name,"a");
 		//printf("\nlog_message = %s\n",log_message);
 		char *Mytime_fmt = " %s.%09ld ";
 		char MyTime[27];
