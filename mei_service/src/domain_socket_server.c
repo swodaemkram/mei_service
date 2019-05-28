@@ -32,7 +32,7 @@ void domain_socket_server (void)
 	fcntl(sock, F_SETFL, O_NONBLOCK); // Set Socket for NON-Blocking
 	server.sun_family = AF_UNIX;           //Protocol
 
-	sprintf(mei_command_sock_name,"mei_command_%d.sock",procnumber);
+	sprintf(mei_command_sock_name,"mei_command%d.sock",procnumber);
 	//strcpy(server.sun_path, "mei_command.sock");		//build socket path
 	strcpy(server.sun_path, mei_command_sock_name);
 	bind(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_un)); //Bind Socket
@@ -46,7 +46,7 @@ void domain_socket_server (void)
 		//perror("socket"); //DEBUG should say Resource Temporarily Unavailable
 		close(msgsock);
 		close(sock);
-		unlink("mei_command.sock");
+		unlink(mei_command_sock_name);
 		//printf("BAIL\n");
 		return;
 	}
@@ -62,7 +62,7 @@ void domain_socket_server (void)
 	strcpy(MEI_CURRENT_COMMAND,buf);
 	close(msgsock);
     close(sock);
-    unlink("mei_command.sock");
+    unlink(mei_command_sock_name);
 	return;
 	}
 
