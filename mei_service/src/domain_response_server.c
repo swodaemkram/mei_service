@@ -21,6 +21,7 @@ extern int procnumber;
 extern char MEI_STATUS[30]; //GLOBAL STATUS OF THE MEI
 extern char LAST_MEI_STATUS[30];
 int txsock = 0;
+char mei_response_sock_name[250] = {0};
 
 void domain_response_server(void)
 {
@@ -32,7 +33,7 @@ void domain_response_server(void)
 		sock = socket(AF_UNIX, SOCK_STREAM, 0); //setup socket
 		fcntl(sock, F_SETFL, O_NONBLOCK); // Set Socket for NON-Blocking
 		server.sun_family = AF_UNIX;           //Protocol
-		char mei_response_sock_name[250] = {0};
+
 		sprintf(mei_response_sock_name,"mei_response%d.sock",procnumber);
 		//strcpy(server.sun_path, "mei_response.sock");		//build socket path
 		strcpy(server.sun_path,mei_response_sock_name);

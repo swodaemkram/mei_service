@@ -6,6 +6,7 @@
  */
 #include <stdio.h>
 char MEI_CURRENT_COMMAND[30] = "idle";
+char mei_command_file_name[250] = {0};
 extern int procnumber;
 
 void get_command_from_file(void)
@@ -13,7 +14,7 @@ void get_command_from_file(void)
 
 FILE *fp;
 char buff[255] = {0};
-char mei_command_file_name[250] = {0};
+
 sprintf(mei_command_file_name,"mei_command%d",procnumber);
 
 if (fopen(mei_command_file_name,"r")== NULL)

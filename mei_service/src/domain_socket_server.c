@@ -16,8 +16,10 @@
 #include <sys/epoll.h>
 #include <errno.h>
 #include <netinet/in.h>
+
 extern char MEI_CURRENT_COMMAND[30] ;
 extern int procnumber;
+char mei_command_sock_name[250] = {0};
 
 void domain_socket_server (void)
 {
@@ -29,7 +31,7 @@ void domain_socket_server (void)
 	sock = socket(AF_UNIX, SOCK_STREAM, 0); //setup socket
 	fcntl(sock, F_SETFL, O_NONBLOCK); // Set Socket for NON-Blocking
 	server.sun_family = AF_UNIX;           //Protocol
-	char mei_command_sock_name[250] = {0};
+
 	sprintf(mei_command_sock_name,"mei_command_%d.sock",procnumber);
 	//strcpy(server.sun_path, "mei_command.sock");		//build socket path
 	strcpy(server.sun_path, mei_command_sock_name);
