@@ -23,7 +23,7 @@ void process_commands(void)
 
 	unsigned int tx_crc = 0;
 
-//===============================Start of Stack Command=========================================
+//===============================Start of Stack Command =========================================
 if(strncmp(MEI_CURRENT_COMMAND,"stack",5)==0) //Has the "stack" command been RXed
 	{
 		tx_packet[3] = '\x1f';
