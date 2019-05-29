@@ -32,7 +32,7 @@ void domain_socket_server (void)
 	fcntl(sock, F_SETFL, O_NONBLOCK); // Set Socket for NON-Blocking
 	server.sun_family = AF_UNIX;           //Protocol
 
-	sprintf(mei_command_sock_name,"mei_command%d.sock",procnumber);
+	sprintf(mei_command_sock_name,"/var/run/mei_command%d.socket",procnumber);
 	//strcpy(server.sun_path, "mei_command.sock");		//build socket path
 	strcpy(server.sun_path, mei_command_sock_name);
 	bind(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_un)); //Bind Socket

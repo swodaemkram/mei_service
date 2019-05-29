@@ -34,7 +34,7 @@ void domain_response_server(void)
 		fcntl(sock, F_SETFL, O_NONBLOCK); // Set Socket for NON-Blocking
 		server.sun_family = AF_UNIX;           //Protocol
 
-		sprintf(mei_response_sock_name,"mei_response%d.sock",procnumber);
+		sprintf(mei_response_sock_name,"/var/run/mei_response%d.socket",procnumber);
 		//strcpy(server.sun_path, "mei_response.sock");		//build socket path
 		strcpy(server.sun_path,mei_response_sock_name);
 		bind(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_un)); //Bind Socket
@@ -48,7 +48,7 @@ void domain_response_server(void)
 			//perror("socket"); //DEBUG should say Resource Temporarily Unavailable
 			close(txsock);
 			close(sock);
-			unlink("mei_response.sock");
+			unlink(mei_response_sock_name);
 			return;
 		}
 	}
