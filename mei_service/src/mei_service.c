@@ -78,7 +78,7 @@ log_Function("================================================");
 char log_message[30];
 sprintf(log_message,"MEI Service Starting using %s",comm_port);
 log_Function(log_message);
-log_Function("Ver 01.00.10");
+log_Function("Ver 01.01.60");
 log_Function("================================================");
 signal(SIGTERM,SignalHandler);
 
@@ -153,13 +153,20 @@ if (rx_packet[2] == '\x71') //Enhanced Information Polling
 }
 //==================End of Polling=============================
 //===============Business  Logic for MEI=======================
-get_command_from_file();      //Get Command from File
+//get_command_from_file();      //Get Command from File
+//log_Function("get_command_from_file");//DEBUG
 domain_socket_server();       //Get Command from domain socket
+//log_Function("domain_socket_server");//DEBUG
 process_commands();           //Process In coming commands
+//log_Function("process_command");//DEBUG
 mei_tx(tx_packet, comm_port); //Transmit Packet to MEI
+//log_Function("mei_tx");       //DEBUG
 mei_rx(comm_port);            // Receive packet from MEI
+//log_Function("mei_rx");       //DEBUG
 process_response();           // What does the Response from the MEI mean
+//log_Function("process_response");//DEBUG
 domain_response_server();     // Send Translated response from MEI to domain socket
+//log_Function("domain_response_server called");//DEBUG
 //===============END OF Business Logic===========================
 //===============Process Stop Command============================
 if(strncmp(MEI_CURRENT_COMMAND,"stop",4)==0)

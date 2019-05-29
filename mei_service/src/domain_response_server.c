@@ -20,13 +20,13 @@
 extern int procnumber;
 extern char MEI_STATUS[30]; //GLOBAL STATUS OF THE MEI
 extern char LAST_MEI_STATUS[30];
-int txsock = 0;
+int txsock = -1;
 char mei_response_sock_name[250] = {0};
 
 void domain_response_server(void)
 {
-
-	if(txsock <= 0){
+	   //printf("txsock = %d\n",txsock);//DEBUG
+	    if(txsock <= 0 ){
 
 		int sock;
 		struct sockaddr_un server; //Set up structure for socket
@@ -43,7 +43,7 @@ void domain_response_server(void)
 	    usleep(100000);  //This delay is critical for the operation of the network client
 		txsock = accept(sock, 0, 0); //Accept connection from anyone
 
-		if (txsock == -1)
+		if (txsock <= 0)
 		{
 			//perror("socket"); //DEBUG should say Resource Temporarily Unavailable
 			close(txsock);
