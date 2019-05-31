@@ -20,16 +20,18 @@
 extern int procnumber;
 extern char MEI_STATUS[30]; //GLOBAL STATUS OF THE MEI
 extern char LAST_MEI_STATUS[30];
-int txsock = -1;
+//int txsock = -1;
+int txsock;
+int sock;
 char mei_response_sock_name[250] = {0};
 extern int DEBUG_LOG;
 
 void domain_response_server(void)
 {
-	   //printf("txsock = %d\n",txsock);//DEBUG
-	    if(txsock <= 0 ){
+	    //printf("txsock = %d\n",txsock);//DEBUG
+	    if(txsock <= 0 )
+	    {
 
-		int sock;
 		struct sockaddr_un server; //Set up structure for socket
 		sock = socket(AF_UNIX, SOCK_STREAM, 0); //setup socket
 		fcntl(sock, F_SETFL, O_NONBLOCK); // Set Socket for NON-Blocking
@@ -45,14 +47,14 @@ void domain_response_server(void)
 		txsock = accept(sock, 0, 0); //Accept connection from anyone
 
 		if (txsock <= 0)
-		{
+		    {
 			//perror("socket"); //DEBUG should say Resource Temporarily Unavailable
 			close(txsock);
 			close(sock);
 			unlink(mei_response_sock_name);
 			return;
-		}
-	}
+		    }
+	    }
 
 	if (DEBUG_LOG == 1 && txsock >= 0)
 	{
@@ -64,6 +66,9 @@ void domain_response_server(void)
 	write(txsock,MEI_STATUS,strlen(MEI_STATUS));
 	write(txsock,"\n",1);
 	}
+	close(txsock);
+	unlink(mei_response_sock_name);
+	txsock = -1;
 	return;
 
 }

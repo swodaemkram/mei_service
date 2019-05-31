@@ -163,9 +163,9 @@ mei_tx(tx_packet, comm_port); //Transmit Packet to MEI
 //log_Function("mei_tx");       //DEBUG
 mei_rx(comm_port);            // Receive packet from MEI
 //log_Function("mei_rx");       //DEBUG
-process_response();           // What does the Response from the MEI mean
-//log_Function("process_response");//DEBUG
-domain_response_server();     // Send Translated response from MEI to domain socket
+process_response();           // What does the Response from the MEI mean   <-------------------------------|
+//log_Function("process_response");//DEBUG                                                                  |
+domain_response_server();     // Send Translated response from MEI to domain socket: This gets  here now -|
 //log_Function("domain_response_server called");//DEBUG
 //===============END OF Business Logic===========================
 //===============Process Stop Command============================
