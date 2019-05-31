@@ -22,6 +22,7 @@ extern char MEI_STATUS[30]; //GLOBAL STATUS OF THE MEI
 extern char LAST_MEI_STATUS[30];
 int txsock = -1;
 char mei_response_sock_name[250] = {0};
+extern int DEBUG_LOG;
 
 void domain_response_server(void)
 {
@@ -51,6 +52,11 @@ void domain_response_server(void)
 			unlink(mei_response_sock_name);
 			return;
 		}
+	}
+
+	if (DEBUG_LOG == 1 && txsock >= 0)
+	{
+		log_Function("Client Connected");
 	}
 
 	if (strcmp(MEI_STATUS,LAST_MEI_STATUS) != 0)
