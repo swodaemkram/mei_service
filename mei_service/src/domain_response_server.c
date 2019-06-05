@@ -56,10 +56,7 @@ void domain_response_server(void)
 		    }
 	    }
 
-	if (DEBUG_LOG == 1 && txsock >= 0)
-	{
-		log_Function("Client Connected");
-	}
+	if (DEBUG_LOG == 1 && txsock >= 0) log_Function("Client Connected");
 
 	if (strcmp(MEI_STATUS,LAST_MEI_STATUS) != 0)
 	{

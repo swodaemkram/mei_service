@@ -60,19 +60,7 @@ void process_response (void)
     }
 //======================End of Cassette Removal Detection====================================
 //============================Determine Dnom Stacked=========================================
-/*    if (strncmp(MEI_STATUS,"stacked",7)==0 && rx_packet[5] != '\x00')//OLD IF Statement
-    {
-    	switch (rx_packet[5])
-    	{
-    	case '\x08':
-    		strcpy(MEI_STATUS,"stacked_dnom_1"); //USD $1.00
-    		break;
-    	case '\x28':
-    		strcpy(MEI_STATUS,"stacked_dnom_4"); //USD $20.00
-    		break;
-    	}
-    }
-*/
+
 if (strncmp(MEI_STATUS,"escrowed",8)==0 && strncmp(MEI_CURRENT_COMMAND, "stack",5) == 0)
 {
 	char denom_detail[9] = {0};
@@ -90,22 +78,7 @@ sprintf(MEI_STATUS,"stacked a %s",the_clean_text);
 //strncpy(MEI_STATUS,the_clean_text,8);
 }
 //=============================END of Dnom Determination====================================
-//====================================Dnom Returned==========================================
-    //log_Function(MEI_STATUS);
-/*
-    if (strncmp(MEI_STATUS,"returned",8)==0 )
-    {
-    	switch (rx_packet[5])
-    	    	{
-    	    	case '\x08':
-    	    		strcpy(MEI_STATUS,"verified_dnom_1"); //USD $1.00
-    	    		break;
-    	    	case '\x28':
-    	    		strcpy(MEI_STATUS,"verified_dnom_4"); //USD $20.00
-    	    		break;
-    	    	}
-    }
-*/
+
 if (strncmp(MEI_STATUS,"escrowed",8)==0 && strncmp(MEI_CURRENT_COMMAND, "verify",5) == 0)
 {
 	char denom_detail[9] = {0};

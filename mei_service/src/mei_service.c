@@ -12,6 +12,7 @@
 char comm_port[250] = {0};
 char tx_packet[30] = {0};
 char pid_loc_file_name[250];
+char MEI_CURRENT_COMMAND[30] = "idle";
 int procnumber;
 
 int main(int argc, char *argv[])
@@ -78,7 +79,7 @@ log_Function("================================================");
 char log_message[30];
 sprintf(log_message,"MEI Service Starting using %s",comm_port);
 log_Function(log_message);
-log_Function("Ver 01.01.60");
+log_Function("Ver 01.88.00");
 log_Function("================================================");
 signal(SIGTERM,SignalHandler);
 
@@ -153,8 +154,6 @@ if (rx_packet[2] == '\x71') //Enhanced Information Polling
 }
 //==================End of Polling=============================
 //===============Business  Logic for MEI=======================
-//get_command_from_file();      //Get Command from File
-//log_Function("get_command_from_file");//DEBUG
 domain_socket_server();       //Get Command from domain socket
 //log_Function("domain_socket_server");//DEBUG
 process_commands();           //Process In coming commands

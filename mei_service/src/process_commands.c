@@ -9,12 +9,7 @@ extern char tx_packet[30];
 extern char MEI_STATUS[30];
 extern char rx_packet[30];
 char MEI_LAST_COMMAND[30] = {0};
-int GET_MODEL_ONETIME = 0;
-int GET_INFO_ONETIME = 0;
-int GET_SERIAL_ONETIME = 0;
-int GET_BOOTVER_ONETIME = 0;
-int GET_APPVER_ONETIME = 0;
-int GET_VARNAME_ONETIME = 0;
+int GET_ONETIME = 0;
 int DEBUG_LOG = 0; //Turns on and off detailed debug logging
 int DEBUG_LOG_ONETIME = 0;
 
@@ -36,21 +31,6 @@ if(strncmp(MEI_CURRENT_COMMAND,"stack",5)==0) //Has the "stack" command been RXe
 		tx_packet[6] = '\x03';
 		tx_packet[7] = tx_crc;
 	}
-/* I LIKED THIS WAY BETTER
-if(strncmp(MEI_CURRENT_COMMAND,"stack",5)==0 && strncmp(MEI_STATUS,"escrowed",8)==0)
-
-	{
-		tx_packet[3] = '\x7f';//We are sending the Stack Command in this part
-		tx_packet[4] = '\x3c';
-		tx_packet[6] = '\x00';
-		tx_packet[7] = '\x00';
-		tx_crc = 0;
-		tx_crc = do_crc(tx_packet,8);
-		tx_packet[6] = '\x03';
-		tx_packet[7] = tx_crc;
-
-	}
-*/
 
 if((strncmp(MEI_CURRENT_COMMAND,"stack",5)==0 && rx_packet[11]=='\x55') ||(strncmp(MEI_CURRENT_COMMAND,"stack",5)==0 && rx_packet[11]=='\x45') || (strncmp(MEI_CURRENT_COMMAND,"stack",5)==0 && rx_packet[11]=='\x49')) //Detects the U in USD, THE E in ERO and the I in ILS
 {
@@ -151,45 +131,16 @@ if((strncmp(MEI_CURRENT_COMMAND,"stack",5)==0 && rx_packet[11]=='\x55') ||(strnc
 		sprintf(log_message,"Command Issued = %s",MEI_CURRENT_COMMAND);
 		log_Function(log_message);
 		strcpy(MEI_LAST_COMMAND,MEI_CURRENT_COMMAND);
-		GET_MODEL_ONETIME = 0; //Reset Run Command Once Flag
-		GET_SERIAL_ONETIME = 0;//Reset Run Command Once Flag
-		GET_BOOTVER_ONETIME = 0;//Reset Run Command Once Flag
-		GET_APPVER_ONETIME = 0;//Reset Run Command Once Flag
-		GET_VARNAME_ONETIME = 0;//Reset Run Command Once Flag
+		GET_ONETIME = 0;//Reset Run Once Flag
 		DEBUG_LOG_ONETIME = 0;
 	}
 //==================================END OF LOGGING===============================================
 // ^^^^^^^^^^^^ ALL SINGLE RUN COMMANDS NEED TO BE BELOW THIS  ^^^^^^^^^^^^^^^^
-//=================================Get Serial Command============================================
-    if(strncmp(MEI_CURRENT_COMMAND,"serial",6)== 0 && GET_SERIAL_ONETIME == 0)
-   	{
-    	get_serial();
-   	}
-//==================================End of Get Serial command====================================
-//===============================GET MODEL Command===============================================
-    if(strncmp(MEI_CURRENT_COMMAND,"model",5)== 0 && GET_MODEL_ONETIME == 0)
-   	{
-       	get_model();
-   	}
-//=================================End of GET MODEL command======================================
-//=================================Get BOOT Version==============================================
-    if(strncmp(MEI_CURRENT_COMMAND,"bootver",7)== 0 && GET_BOOTVER_ONETIME == 0)
-  	{
-       	get_bootver();
-   	}
-//==================================END of Get Boot Version======================================
-//==================================Get APPVER Command===========================================
-    if(strncmp(MEI_CURRENT_COMMAND,"appver",6)== 0 && GET_APPVER_ONETIME == 0)
-    {
-       	get_appver();
-    }
-//==================================END of Get APPVER Command====================================
-//==================================Get VARNAME Command===========================================
-     if(strncmp(MEI_CURRENT_COMMAND,"varname",6)== 0 && GET_VARNAME_ONETIME == 0)
-     {
-       	get_varname();
-     }
-//==================================END of Get APPVER Command====================================
+//==================================Singel Get Replacement=======================================
+
+     get(); //This will be the single run command function
+
+//==================================END of Get Replacement=======================================
 //==================================Toggel DEBUG logging=========================================
      if (strncmp(MEI_CURRENT_COMMAND,"debuglog",8)== 0 && DEBUG_LOG_ONETIME == 0)
      {
