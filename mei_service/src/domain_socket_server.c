@@ -5,7 +5,6 @@
  *      Author: mark
  */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -60,11 +59,22 @@ void domain_socket_server (void)
 	//printf("--> %s\n ", buf); //Print Results DEBUG
 	log_Function("client connected to send command");
 
+	if (strlen(buf) <= 3)
+	{
+		close(msgsock);
+		close(sock);
+		unlink(mei_command_sock_name);
+		return;
+	}
+
 if(strncmp(buf,"reset",5)==0 || strncmp(buf,"verify",6) ==0 || strncmp(buf,"stack",5) ==0 || strncmp(buf,"idle",4) ==0 || strncmp(buf,"appver",6)==0 ||
  strncmp(buf,"bootver",7)==0 || strncmp(buf,"model",5) ==0 || strncmp(buf,"serial",6) == 0 || strncmp(buf,"varname",7)==0|| strncmp(buf,"stop",4)==0)
-
     {
 	strcpy(MEI_CURRENT_COMMAND,buf);
+	close(msgsock);
+	close(sock);
+	unlink(mei_command_sock_name);
+	return;
     }
 
     log_Function("client sent invalid command");

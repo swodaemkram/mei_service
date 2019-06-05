@@ -83,7 +83,7 @@ Finished Setting up Comm Port
 */
 			    fcntl(fd, F_SETFL, FNDELAY);//THIS IS HUGELY IMPORTANT !!! MAKES THE SERIALPORT NON-BLOCKING
 
-			    printf("\033[1;32m"); //Set color to Green
+			    //printf("\033[1;32m"); //Set color to Green
 
 			    unsigned char buf[80];
 			    int rdlen = 0;
@@ -104,7 +104,7 @@ Finished Setting up Comm Port
 			    		i++;
 			    	}
 			    	//printf("\n");
-			    	printf("\033[0m");  //Set Color back to white
+			    	//printf("\033[0m");  //Set Color back to white
 //====================================================== Enhanced Logging ==========================================================================
 if(DEBUG_LOG == 1)
 {
@@ -126,7 +126,7 @@ log_Function(the_clean_text);
 			    {
 			    	rx_packet[0] = '\x00';
 			    	rx_packet_len = 1;
-			    	printf("\033[0m");  //Set Color back to white
+			    	//printf("\033[0m");  //Set Color back to white
 			    }
 
 /*
