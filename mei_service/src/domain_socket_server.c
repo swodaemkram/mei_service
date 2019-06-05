@@ -47,7 +47,6 @@ void domain_socket_server (void)
 		close(msgsock);
 		close(sock);
 		unlink(mei_command_sock_name);
-		//printf("BAIL\n");
 		return;
 	}
 
@@ -59,7 +58,8 @@ void domain_socket_server (void)
     if(rval > 0 )
 	{
 	//printf("--> %s\n ", buf); //Print Results DEBUG
-	strcpy(MEI_CURRENT_COMMAND,buf);
+	log_Function("client connected to send command");
+    strcpy(MEI_CURRENT_COMMAND,buf);
 	close(msgsock);
     close(sock);
     unlink(mei_command_sock_name);

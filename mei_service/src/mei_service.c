@@ -38,7 +38,7 @@ Lets process the service startup commands
 procnumber = atoi(argv[2]);
 
 sprintf(pid_loc_file_name,"/run/mei_service%d.pid",procnumber);
-printf("pid-file = %s\n",pid_loc_file_name);
+//printf("pid-file = %s\n",pid_loc_file_name);//DEBUG
 /*
 ===================================================================================================================
 Finished processing the service startup commands

@@ -16,9 +16,15 @@ extern char MEI_STATUS[30];
 void get(void)
 
 {
-		if (GET_ONETIME == 1) return;
-       	if (strncmp(MEI_CURRENT_COMMAND,"idle",4)== 0) return;
-	    if (strncmp(MEI_CURRENT_COMMAND,"appver",6) == 0) tx_packet[5] = '\x07';
+//===================These things are handled in other methods==============================
+	    if (GET_ONETIME == 1) return;
+       	if (strncmp(MEI_CURRENT_COMMAND,"reset",5)== 0) return;
+		if (strncmp(MEI_CURRENT_COMMAND,"stack",5)== 0) return;
+		if (strncmp(MEI_CURRENT_COMMAND,"verify",5)== 0) return;
+		if (strncmp(MEI_CURRENT_COMMAND,"idle",4)== 0) return;
+//===================These things are handled in other methods==============================
+
+		if (strncmp(MEI_CURRENT_COMMAND,"appver",6) == 0) tx_packet[5] = '\x07';
        	if (strncmp(MEI_CURRENT_COMMAND,"bootver",7) == 0) tx_packet[5] = '\x06';
        	if (strncmp(MEI_CURRENT_COMMAND,"model",5) == 0) tx_packet[5] = '\x04';
        	if (strncmp(MEI_CURRENT_COMMAND,"serial",6) == 0) tx_packet[5] = '\x05';
