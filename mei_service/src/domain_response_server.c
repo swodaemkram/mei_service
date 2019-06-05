@@ -62,8 +62,11 @@ void domain_response_server(void)
 	{
 	write(txsock,MEI_STATUS,strlen(MEI_STATUS));
 	write(txsock,"\n",1);
+	close(sock);
 	}
+
 	close(txsock);
+	close(sock);
 	unlink(mei_response_sock_name);
 	txsock = -1;
 	return;

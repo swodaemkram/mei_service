@@ -156,15 +156,21 @@ if (rx_packet[2] == '\x71') //Enhanced Information Polling
 //===============Business  Logic for MEI=======================
 domain_socket_server();       //Get Command from domain socket
 //log_Function("domain_socket_server");//DEBUG
+//printf("domain_socket_server\n");//DEBUG
 process_commands();           //Process In coming commands
+//printf("process_commands\n");//DEBUG
 //log_Function("process_command");//DEBUG
 mei_tx(tx_packet, comm_port); //Transmit Packet to MEI
+//printf("mei_tx\n");//DEBUG
 //log_Function("mei_tx");       //DEBUG
 mei_rx(comm_port);            // Receive packet from MEI
+//printf("mei_rx\n");//DEBUG
 //log_Function("mei_rx");       //DEBUG
 process_response();           // What does the Response from the MEI mean   <-------------------------------|
+//printf("process_response\n");//DEBUG
 //log_Function("process_response");//DEBUG                                                                  |
 domain_response_server();     // Send Translated response from MEI to domain socket: This gets  here now -|
+//printf("domain_response_server\n");//DEBUG
 //log_Function("domain_response_server called");//DEBUG
 //===============END OF Business Logic===========================
 //===============Process Stop Command============================
@@ -176,7 +182,7 @@ if(strncmp(MEI_CURRENT_COMMAND,"stop",4)==0)
 	SignalHandler(1);
 }
 //================End of Stop Command=============================
-usleep(300000);
+usleep(30000);
 
 }//End of our while loop
 //close(fd);
