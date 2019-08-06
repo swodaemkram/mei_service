@@ -54,6 +54,15 @@ sudo socat -UNIX-CONNECT:./mei_service.sock
   monitored by mei_service and allows a user to issue a command that is sent to the mei_servers API and allows control 
   of the service from the command line. (finished on 10/24/2019).
   
+  <hr>
+  
+  This program is now a multi-instance service and the CLI usage is as follows
+  
+  sudo ./mei_service /dev/ttyUSB0 1
+  
+  then use usdo ./meicli 1 {command} to manage the service
+  
+  
   
   
   
